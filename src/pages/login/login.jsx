@@ -36,12 +36,12 @@ function Login() {
         </p>
         <div className="login-page-btn">
           <Button
-            title="Kirish"
+            title={loading ? "Yuklanmoqda..." : "Kirish"}
             className="login-btn"
             onClick={handleLoginBtn}
           />
           <Button
-            title="Ro'yihatdan o'tish"
+            title={loading ? "Yuklanmoqda..." : "Ro'yihatdan o'tish"}
             className="register-btn"
             onClick={handleRegisterBtn}
           />
