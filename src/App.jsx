@@ -1,13 +1,13 @@
 import Button from "./components/Button";
-import Login from "./pages/login/login";
-import { Route, Routes } from "react-router-dom";
+import AppRoutes from "./routes";
+import Navbar from "./pages/home/navbar/navbar";
+import "./App.css";
 
 function Home() {
   return (
-    <div>
-      <Routes>
-        <Route path="/login" element={<Login />} />
-      </Routes>
+    <div className="App">
+      <Navbar />
+      <AppRoutes />
     </div>
   );
 }

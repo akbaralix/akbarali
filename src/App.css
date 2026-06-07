@@ -1,0 +1,7 @@
+.App {
+  max-width: var(--container-width);
+  margin: 0px auto;
+  position: relative;
+  margin-top: 100px;
+  padding: 1rem;
+}

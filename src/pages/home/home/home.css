@@ -1,0 +1,11 @@
+.home-content {
+  background-color: rgb(15, 14, 13);
+  box-shadow: var(--glass-shadow);
+  border-radius: 2rem;
+}
+
+.home-text {
+  padding: 20px;
+}
+h1 {
+}
