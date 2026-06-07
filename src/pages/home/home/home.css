@@ -1,5 +1,5 @@
 .home-content {
-  background-color: rgb(15, 14, 13);
+  background: rgba(16, 17, 17, 0.445);
   box-shadow: var(--glass-shadow);
   border-radius: 2rem;
 }
@@ -8,4 +8,5 @@
   padding: 20px;
 }
 h1 {
+  text-align: center;
 }

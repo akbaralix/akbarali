@@ -2,7 +2,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background: rgba(27, 29, 28, 0.445);
+  background: rgba(16, 17, 17, 0.445);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
   padding: 10px 30px;
@@ -36,7 +36,7 @@
 }
 
 .dowlond-cvv {
-  background-color: rgb(17, 17, 17);
+  background: rgba(16, 17, 17, 0.445);
   color: #fff;
   font-size: 16px;
   border-radius: 2rem;
