@@ -52,7 +52,7 @@ function Home() {
         </div>
 
         <div className="home-img">
-          <img src="/src/assets/assets.png" alt="Akbarali" />
+          <img src="/assets/assets.png" alt="Akbarali" />
         </div>
       </div>
     </div>
