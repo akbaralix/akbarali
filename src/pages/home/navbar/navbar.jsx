@@ -1,28 +1,38 @@
 import { useState } from "react";
 import { Link, NavLink } from "react-router-dom";
-import { FaTimes, FaTelegram, FaInstagram, FaLinkedin } from "react-icons/fa";
+import {
+  FaTimes,
+  FaTelegram,
+  FaInstagram,
+  FaLinkedin,
+  FaGithub,
+} from "react-icons/fa";
 
 import "./navbar.css";
 
 function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
-  const socialLinks = [
+  const myLink = [
     {
-      link: "https://t.me/akbarali",
-      icon: FaTelegram,
+      name: "Telegram",
+      link: "https://t.me/akbaral1",
+      icon: <FaTelegram className="icon-tg" />,
     },
     {
       link: "https://instagram.com/akbaral1.t7",
-      icon: FaInstagram,
+      icon: <FaInstagram className="icon-insta" />,
+    },
+    {
+      link: "https://github.com/akbaral1",
+      icon: <FaGithub className="icon-github" />,
     },
     {
       link: "https://linkedin.com/in/akbarali",
-      icon: FaLinkedin,
+      icon: <FaLinkedin className="icon-linkedin" />,
     },
   ];
   return (
     <>
-      {/* TOP NAVBAR */}
       <div className="navbar">
         <div className="logo">
           <Link to="/" onClick={() => setMenuOpen(false)}>
@@ -100,10 +110,10 @@ function Navbar() {
         </nav>
 
         <div className="social-links">
-          {socialLinks.map((item, index) => (
+          {myLink.map((item, index) => (
             <div className="social-link" key={index}>
               <a href={item.link} target="_blank" rel="noreferrer">
-                <item.icon />
+                {item.icon}
               </a>
             </div>
           ))}
