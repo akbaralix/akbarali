@@ -1,4 +1,5 @@
 import React from "react";
+import myLogo from "../../../assets/assets.png";
 import { FaLinkedin, FaGithub, FaTelegram, FaInstagram } from "react-icons/fa";
 import "./home.css";
 
@@ -52,7 +53,7 @@ function Home() {
         </div>
 
         <div className="home-img">
-          <img src="/src/assets/assets.png" alt="Akbarali" />
+          <img src={myLogo} alt="Akbarali" />
         </div>
       </div>
     </div>
