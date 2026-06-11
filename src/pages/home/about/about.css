@@ -1,0 +1,175 @@
+.about-container {
+  color: #ffffff;
+}
+
+.about-title {
+  font-size: 2.8rem;
+  font-weight: 700;
+  color: #3636c6;
+  margin-bottom: 40px;
+  text-align: center;
+}
+
+.about-grid {
+  display: grid;
+  grid-template-columns: 1.2fr 0.8fr;
+  gap: 40px;
+  align-items: start;
+}
+
+.about-bio h3 {
+  font-size: 1.7rem;
+  line-height: 1.4;
+  margin-bottom: 20px;
+  color: #ffffff;
+}
+
+.about-bio p {
+  font-size: 1.1rem;
+  line-height: 1.7;
+  color: #c0c0c0;
+  margin-bottom: 20px;
+}
+
+/* Filosofiya kartochkasi */
+.philosophy-card {
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  padding: 30px;
+  border-radius: 20px;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+}
+
+.philosophy-card h5 {
+  font-size: 1.3rem;
+  color: #3636c6;
+  margin-bottom: 15px;
+  font-weight: 600;
+}
+
+.philosophy-card ul {
+  list-style: none;
+  padding: 0;
+}
+
+.philosophy-card ul li {
+  font-size: 0.95rem;
+  line-height: 1.6;
+  color: #a0a0a0;
+  margin-bottom: 15px;
+  position: relative;
+  padding-left: 20px;
+}
+
+.philosophy-card ul li::before {
+  content: "⚡";
+  position: absolute;
+  left: 0;
+  top: 2px;
+  font-size: 0.9rem;
+}
+
+.about-timeline-section {
+  margin-top: 100px;
+}
+
+.timeline-main-title {
+  font-size: 2rem;
+  text-align: center;
+  margin-bottom: 50px;
+  font-weight: 700;
+}
+
+.timeline-container {
+  position: relative;
+  max-width: 800px;
+  margin: 0 auto;
+  padding-left: 30px;
+  border-left: 2px solid rgba(54, 54, 198, 0.3);
+}
+
+.timeline-item {
+  position: relative;
+  margin-bottom: 40px;
+}
+
+.timeline-item::before {
+  content: "";
+  position: absolute;
+  left: -40px;
+  top: 5px;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: #3636c6;
+  border: 3px solid #000;
+  box-shadow: 0 0 10px #3636c6;
+  transition: 0.3s;
+}
+
+.timeline-year {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: #3636c6;
+  margin-bottom: 5px;
+}
+
+.timeline-content {
+  background: rgba(255, 255, 255, 0.01);
+  box-shadow: var(--glass-shadow);
+  padding: 20px;
+  border-radius: 40px;
+  transition: 0.3s;
+}
+
+.timeline-content h4 {
+  font-size: 1.2rem;
+  color: #ffffff;
+  margin-bottom: 8px;
+}
+
+.timeline-content p {
+  color: #888888;
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+
+/* Hover effektlari */
+.timeline-item:hover::before {
+  background: #ffffff;
+  transform: scale(1.2);
+}
+
+.timeline-content:hover {
+  background: rgba(255, 255, 255, 0.03);
+  border-color: rgba(54, 54, 198, 0.2);
+}
+@media (max-width: 768px) {
+  .about-title {
+    font-size: 2.2rem;
+  }
+
+  .about-grid {
+    grid-template-columns: 1fr;
+    gap: 30px;
+  }
+
+  .about-bio h3 {
+    font-size: 1.5rem;
+  }
+  .about-bio p {
+    font-size: 1rem;
+  }
+
+  .timeline-main-title {
+    font-size: 1.6rem;
+  }
+  .timeline-container {
+    padding-left: 20px;
+  }
+  .timeline-item::before {
+    left: -27px;
+  }
+}
