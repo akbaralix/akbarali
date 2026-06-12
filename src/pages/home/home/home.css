@@ -119,11 +119,7 @@
 .home-social-link a:hover .icon-linkedin {
   color: #0077b5;
 }
-/* --- Seksiyaning umumiy o'rashi --- */
 .skills-container {
-  max-width: 1200px;
-  margin: 80px auto;
-  padding: 0 20px;
   font-family: "Poppins", sans-serif;
 }
 
