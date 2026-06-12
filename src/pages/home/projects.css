@@ -1,5 +1,4 @@
 .projects-container {
-  /* font-family: "Poppins", sans-serif; */
   color: #ffffff;
 }
 
@@ -85,9 +84,8 @@
   letter-spacing: 0.5px;
 }
 
-/* Karta matnlari */
 .project-card-body {
-  flex-grow: 1; /* Matn kam bo'lsa ham kartalar bo'yi teng turishi uchun */
+  flex-grow: 1;
 }
 
 .project-title-text {

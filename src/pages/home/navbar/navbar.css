@@ -6,7 +6,6 @@
 
   background: rgba(16, 17, 17, 0.445);
   backdrop-filter: blur(20px) saturate(110%) brightness(108%);
-  /* -webkit-backdrop-filter: blur(20px) saturate(110%) brightness(108%); */
 
   padding: 10px 30px;
   position: fixed;
@@ -102,7 +101,6 @@
 
   background: rgba(10, 11, 11, 0.75);
   backdrop-filter: blur(25px) saturate(180%);
-  -webkit-backdrop-filter: blur(25px) saturate(180%);
 
   padding: 30px 24px;
   z-index: 150;
