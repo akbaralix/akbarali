@@ -90,7 +90,6 @@
   top: 20px;
 }
 
-/* ==================== MOBIL MENYU (OVERLAY) ==================== */
 .mn-nav {
   display: none;
   position: fixed;
@@ -133,6 +132,7 @@
   justify-content: center;
   width: 44px;
   height: 44px;
+  font-size: 25px;
   border-radius: 50%;
   border: none;
   cursor: pointer;
@@ -183,10 +183,10 @@
   align-items: center;
   justify-content: center;
   position: absolute;
-  bottom: 40px;
+  bottom: 20px;
   left: 50%;
   transform: translateX(-50%) translateY(20px);
-  gap: 30px;
+  gap: 15px;
   opacity: 0;
   transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1) 0.2s;
 }
@@ -204,31 +204,29 @@
   width: 45px;
   height: 45px;
   border-radius: 50%;
-  background: rgba(171, 160, 160, 0.1);
   box-shadow: var(--glass-shadow);
   font-size: 1.7rem;
   color: #2e2ed4;
   text-decoration: none;
   transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  background: rgb(253, 245, 245);
 }
 
 .social-links a:hover {
-  background: white;
-  color: #3636c6;
   transform: scale(1.15) translateY(-3px);
 }
 
-.social-links a:hover .icon-tg {
+.social-links .icon-tg {
   color: #0088cc;
 }
-.social-links a:hover .icon-insta {
-  color: #e1306c;
+.social-links .icon-insta {
+  color: #ea2d6c;
 }
-.social-links a:hover .icon-github {
-  color: #333;
+.social-links .icon-github {
+  color: #000000;
 }
-.social-links a:hover .icon-linkedin {
-  color: #0077b5;
+.social-links .icon-linkedin {
+  color: #00527f;
 }
 
 @media (max-width: 900px) {
@@ -251,7 +249,8 @@
   .navbar {
     padding: 10px 20px;
     height: 55px;
-    width: 92%;
+    width: 95%;
+    margin: 16px auto;
   }
 
   .mn-nav {

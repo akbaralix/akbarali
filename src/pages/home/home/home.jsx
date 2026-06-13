@@ -42,15 +42,15 @@ function Home() {
     { id: 1, name: "Python", icon: <FaPython />, color: "#3776AB" },
 
     { id: 2, name: "JavaScript", icon: <FaJsSquare />, color: "#F7DF1E" },
-    { id: 3, name: "React", icon: <FaReact />, color: "#61DAFB" },
-    { id: 4, name: "Vite", icon: <SiVite />, color: "#646CFF" },
-    { id: 5, name: "HTML5", icon: <FaHtml5 />, color: "#E34F26" },
-    { id: 6, name: "CSS3", icon: <FaCss3Alt />, color: "#1572B6" },
+    { id: 3, name: "React", icon: <FaReact />, color: "#108aac" },
+    { id: 4, name: "Vite", icon: <SiVite />, color: "#535bfc" },
+    { id: 5, name: "HTML5", icon: <FaHtml5 />, color: "#f74514" },
+    { id: 6, name: "CSS3", icon: <FaCss3Alt />, color: "#0f6fb4" },
   ];
   const myDatabase = [
-    { id: 1, name: "MySQL", icon: <GrMysql />, color: "#4479A1" },
+    { id: 1, name: "MySQL", icon: <GrMysql />, color: "#00758F" },
     { id: 2, name: "PostgreSQL", icon: <BiLogoPostgresql />, color: "#336791" },
-    { id: 3, name: "MongoDB", icon: <SiMongodb />, color: "#3776AB" },
+    { id: 3, name: "MongoDB", icon: <SiMongodb />, color: "#00ED64" },
   ];
 
   return (
@@ -97,13 +97,10 @@ function Home() {
             tanlayman. Mening asosiy qurollarim:
           </p>
         </div>
-
-        {/* 🚀 Asosiy Texnologiyalar */}
         <div className="skills-section-block">
           <h3 className="sub-section-title">Frontend & Backend</h3>
           <div className="skill-card-grid">
             {mySkills.map((skill) => {
-              // Har bir til uchun dinamik ta'riflar
               let shortDesc = "";
               if (skill.name === "Python")
                 shortDesc = "Avtomatizatsiya va asinxron botlar";
@@ -135,8 +132,6 @@ function Home() {
             })}
           </div>
         </div>
-
-        {/* 🗄 Ma'lumotlar Bazasi */}
         <div className="database-section-block">
           <h3 className="sub-section-title">Ma'lumotlar Ombori (Databases)</h3>
           <div className="database-card-grid">
@@ -163,7 +158,6 @@ function Home() {
             })}
           </div>
         </div>
-
         <div className="principles-block">
           <h3 className="sub-section-title">
             Nega aynan men bilan ishlash kerak?

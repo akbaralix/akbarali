@@ -41,6 +41,7 @@
   object-fit: cover;
   transition: transform 0.5s cubic-bezier(0.25, 1, 0.5, 1);
   animation: dropBounce 2s ease;
+  filter: drop-shadow(0 10px 30px rgba(61, 61, 93, 0.281));
 }
 
 .home-social {
@@ -296,11 +297,9 @@
       opacity: 1;
     }
     75% {
-      transform: translateY(-15px);
+      transform: translateY(-8px);
     }
-    90% {
-      transform: translateY(0);
-    }
+
     95% {
       transform: translateY(-1px);
     }
