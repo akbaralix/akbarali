@@ -66,6 +66,14 @@
   font-weight: 400;
   margin-bottom: 15px;
 }
+.blog-post-header p {
+  font-size: 16px;
+  line-height: 1.5;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: #888888;
+}
 .post-img {
   height: 400px;
 }
@@ -93,10 +101,10 @@
     "Open Sans",
     "Helvetica Neue",
     sans-serif;
-} /* Kattalashtirilgan rasm overlay foni */
+}
 .image-zoom-overlay {
   position: fixed;
-  top: 0;
+  top: 40px;
   left: 0;
   width: 100vw;
   height: 100vh;
@@ -105,11 +113,10 @@
   align-items: center;
   justify-content: center;
   user-select: none;
-  touch-action: none; /* Telefonda brauzer sahifani tortib yubormasligi uchun */
+  touch-action: none;
   transition: background-color 0.3s ease;
 }
 
-/* Rasmni o'rab turuvchi konteyner (sudraladigan qism) */
 .zoom-image-wrapper {
   max-width: 90%;
   max-height: 80vh;
@@ -124,7 +131,7 @@
 }
 
 .zoom-image-wrapper img {
-  max-width: 100%;
+  max-width: 90%;
   max-height: 80vh;
   object-fit: contain;
   border-radius: 12px;
@@ -186,6 +193,18 @@
   }
   .post-img {
     height: 250px;
+  }
+  .image-zoom-overlay {
+    top: 0;
+    left: 0;
+  }
+  .zoom-image-wrapper {
+    max-width: 100%;
+    margin-top: 20px;
+  }
+  .zoom-image-wrapper img {
+    border-radius: 0;
+    max-width: 100%;
   }
   .zoom-close-btn {
     top: 100px;

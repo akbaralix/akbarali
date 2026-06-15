@@ -2,13 +2,13 @@ import React, { useState, useRef } from "react";
 import { useParams, Link, useNavigate } from "react-router-dom";
 import { blogPosts } from "./blogPost";
 import { IoArrowBackOutline, IoClose } from "react-icons/io5";
+import { FaRegClock } from "react-icons/fa";
 
 function BlogPostDetail() {
   const { slug } = useParams();
   const navigate = useNavigate();
   const [isZoomed, setIsZoomed] = useState(false);
 
-  // Sudrash (Drag) mantiqi uchun render o'zgaruvchilari
   const [translateY, setTranslateY] = useState(0);
   const [opacity, setOpacity] = useState(1);
   const isDragging = useRef(false);
@@ -69,7 +69,11 @@ function BlogPostDetail() {
 
       <div className="blog-post-header">
         <h2>{post.title}</h2>
-        <p>{post.date}</p>
+
+        <p>
+          <FaRegClock />
+          {post.date}
+        </p>
       </div>
 
       {/* Rasmni bosganda kattalashadi */}
@@ -81,7 +85,6 @@ function BlogPostDetail() {
         <p>{post.content}</p>
       </div>
 
-      {/* 🌌 KATTALASHGAN RASM MODAL OYNASI (TELEGRAM EFFECT) */}
       {isZoomed && (
         <div
           className="image-zoom-overlay"
