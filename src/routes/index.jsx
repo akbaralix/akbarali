@@ -1,10 +1,12 @@
 import { Routes, Route } from "react-router-dom";
 
 import React from "react";
-import Home from "../pages/home/home/home";
-import About from "../pages/home/about/about";
-import Projects from "../pages/home/projects/projects";
-import Contact from "../pages/home/contact/contact";
+import Home from "../pages/home/home";
+import About from "../pages/about/about";
+import Projects from "../pages/projects/projects";
+import Contact from "../pages/contact/contact";
+import BlogPostDetail from "../pages/blog/BlogPostDetail";
+import Blog from "../pages/blog/blog";
 
 function AppRoutes() {
   return (
@@ -12,7 +14,10 @@ function AppRoutes() {
       <Route path="/" element={<Home />} />
       <Route path="/haqimda" element={<About />} />
       <Route path="/loyihalar" element={<Projects />} />
+      <Route path="/blog" element={<Blog />} />
       <Route path="/aloqa" element={<Contact />} />
+
+      <Route path="/blog/:slug" element={<BlogPostDetail />} />
     </Routes>
   );
 }

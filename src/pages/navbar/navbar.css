@@ -1,11 +1,10 @@
-/* ==================== DESKTOP NAVBAR ==================== */
 .navbar {
   display: flex;
   align-items: center;
   justify-content: space-between;
 
   background: rgba(16, 17, 17, 0.445);
-  backdrop-filter: blur(20px) saturate(110%) brightness(108%);
+  backdrop-filter: blur(20px) saturate(130%) brightness(108%);
 
   padding: 10px 30px;
   position: fixed;
@@ -29,6 +28,7 @@
   color: #fff;
   font-weight: 600;
   text-decoration: none;
+  user-select: all;
 }
 
 .nav-links ul {
@@ -45,6 +45,11 @@
   font-size: 18px;
   text-decoration: none;
   transition: 0.3s;
+}
+
+.nav-links ul li a.active {
+  color: #6060e6;
+  font-weight: 600;
 }
 
 .nav-links ul li a:hover {
@@ -122,7 +127,9 @@
   justify-content: space-between;
   width: 100%;
 }
-
+.mn-header .logo a {
+  font-size: 1.74rem;
+}
 .close-btn {
   background: rgba(46, 45, 45, 0.351);
   box-shadow: var(--glass-shadow);

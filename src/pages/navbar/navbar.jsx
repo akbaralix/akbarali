@@ -67,6 +67,11 @@ function Navbar() {
               <NavLink to="/loyihalar">Loyihalar</NavLink>
             </li>
             <li>
+              <NavLink to="/blog" onClick={() => setMenuOpen(false)}>
+                Blog
+              </NavLink>
+            </li>
+            <li>
               <NavLink to="/aloqa">Aloqa</NavLink>
             </li>
           </ul>
@@ -106,6 +111,11 @@ function Navbar() {
             <li>
               <NavLink to="/aloqa" onClick={() => setMenuOpen(false)}>
                 Aloqa
+              </NavLink>
+            </li>
+            <li>
+              <NavLink to="/blog" onClick={() => setMenuOpen(false)}>
+                Blog
               </NavLink>
             </li>
           </ul>

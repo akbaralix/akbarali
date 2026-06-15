@@ -248,18 +248,19 @@
 
 @media (max-width: 768px) {
   .home-container {
-    height: 85vh;
+    height: 87vh;
   }
   .home-content {
     flex-direction: column-reverse;
     text-align: center;
-    margin: 0;
+    margin: -30px;
     padding: 24px;
     gap: 24px;
   }
 
   .home-text h2 {
     font-size: 2.2rem;
+    line-height: 2.4rem;
   }
 
   .home-text p {
