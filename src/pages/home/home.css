@@ -165,7 +165,7 @@
   background: rgba(255, 255, 255, 0.02);
   box-shadow: var(--glass-shadow);
   padding: 20px;
-  border-radius: 16px;
+  border-radius: 30px;
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
   transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
@@ -228,7 +228,7 @@
 .p-num {
   font-size: 0.9rem;
   font-weight: 700;
-  color: #3636c6;
+  color: #4242f0;
   margin-bottom: 10px;
   letter-spacing: 2px;
 }
@@ -237,7 +237,7 @@
   color: #ffffff;
   font-size: 1.2rem;
   margin-bottom: 8px;
-  font-weight: 600;
+  font-weight: 500;
 }
 
 .principle-item p {
@@ -248,12 +248,12 @@
 
 @media (max-width: 768px) {
   .home-container {
-    height: 87vh;
+    height: 88vh;
   }
   .home-content {
     flex-direction: column-reverse;
     text-align: center;
-    margin: -30px;
+    margin: -15px;
     padding: 24px;
     gap: 24px;
   }

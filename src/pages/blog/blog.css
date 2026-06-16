@@ -104,7 +104,7 @@
 }
 .image-zoom-overlay {
   position: fixed;
-  top: 40px;
+  top: 0;
   left: 0;
   width: 100vw;
   height: 100vh;
@@ -141,7 +141,7 @@
 
 .zoom-close-btn {
   position: absolute;
-  top: 125px;
+  top: 110px;
   right: 25px;
   width: 45px;
   height: 45px;
@@ -169,12 +169,14 @@
   .blog-grid {
     grid-template-columns: 1fr;
   }
-
+  .blog-card {
+    padding: 7px 17px;
+  }
   .blog-card a {
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
-    gap: 15px;
+    gap: 10px;
   }
 
   .blog-card h2 {

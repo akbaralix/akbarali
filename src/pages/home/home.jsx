@@ -33,7 +33,7 @@ function Home() {
       icon: <FaGithub className="icon-github" />,
     },
     {
-      link: "https://linkedin.com/in/akbarali",
+      link: "https://linkedin.com/in/akbaralix",
       icon: <FaLinkedin className="icon-linkedin" />,
     },
   ];
@@ -159,9 +159,7 @@ function Home() {
           </div>
         </div>
         <div className="principles-block">
-          <h3 className="sub-section-title">
-            Nega aynan men bilan ishlash kerak?
-          </h3>
+          <h3 className="sub-section-title">Men qanday kod yozaman?</h3>
           <div className="principles-grid">
             <div className="principle-item">
               <div className="p-num">01</div>

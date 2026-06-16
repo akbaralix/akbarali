@@ -21,7 +21,7 @@ function Navbar() {
       icon: <FaTelegram className="icon-tg" />,
     },
     {
-      link: "https://instagram.com/akbaral1.t7",
+      link: "https://instagram.com/akbarali.t7",
       icon: <FaInstagram className="icon-insta" />,
     },
     {
@@ -29,7 +29,7 @@ function Navbar() {
       icon: <FaGithub className="icon-github" />,
     },
     {
-      link: "https://linkedin.com/in/akbarali",
+      link: "https://linkedin.com/in/akbaralix",
       icon: <FaLinkedin className="icon-linkedin" />,
     },
   ];
