@@ -46,9 +46,20 @@ function Projects() {
       emojiAlt: "📚",
       tech: ["Node.js", "Telegram Bot API", "GROQ AI API", "MongoDB"],
     },
+    {
+      id: 4,
+      img: "/src/assets/AkaStar.jpg",
+      title: "Referal orqalik stars ishlovchi bot",
+      projectUrl: "https://github.com/akbaralix/SlydAi",
+      projectGithubUrl: "https://github.com/akbaral1/OzimizniTaksiBot",
+      type: "Telegram Bot",
+      desc: "Tarixiy ma'lumotlar va jadidlar merosini zamonaviy interfeysda ko'rsatib beruvchi veb-loyiha...",
+      emoji: "https://fonts.gstatic.com/s/e/notoemoji/latest/2b50/512.webp",
+      emojiAlt: "📚",
+      tech: ["Node.js", "Telegram Bot API", "MongoDB"],
+    },
   ];
 
-  // 📂 Saralash tugmalari (name qiymatlari loyihadagi type bilan 100% bir xil bo'lishi shart)
   const projectsSort = [
     {
       id: 1,

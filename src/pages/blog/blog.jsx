@@ -10,11 +10,20 @@ function Blog() {
 
       <div className="blog-grid">
         {blogPosts.map((post) => (
-          <div key={post.id} className="blog-card">
-            <Link to={`/blog/${post.slug}`}>
-              <h2>{post.title}</h2>
-              <img src={post.img} alt={post.title} />
-            </Link>
+          <div>
+            <div className="post-date">
+              <p>{post.date}</p>
+            </div>
+            <div key={post.id} className="blog-card">
+              <Link to={`/blog/${post.slug}`}>
+                <div>
+                  <h2>{post.title}</h2>
+                </div>
+                <div className="blog-img">
+                  <img src={post.img} alt={post.title} />
+                </div>
+              </Link>
+            </div>
           </div>
         ))}
       </div>

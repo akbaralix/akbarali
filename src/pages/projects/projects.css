@@ -214,6 +214,11 @@
   width: 80%;
   border-radius: 30px;
   letter-spacing: 0.03em;
+  box-shadow:
+    inset 0px 4px 0px -2px #ffffff0f,
+    inset 2px 2px 0px -2px #ffffff17,
+    inset -2px -2px 2px -2px #ffffff17,
+    inset -1.8px -3px 0px -2px #ffffff0f;
   font-family:
     system-ui,
     -apple-system,
