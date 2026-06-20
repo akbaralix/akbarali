@@ -7,16 +7,16 @@ function Admin() {
   const [password, setPassword] = useState("");
   const [isAuthorized, setIsAuthorized] = useState(false);
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false); // 🔄 Yuklanish holati uchun
 
   const [yangiMaqola, setYangiMaqola] = useState({
     sarlavha: "",
     rasm: "",
-    matn: "", // Bu yerda endi Bold/Italic formatli HTML matn saqlanadi
+    matn: "",
     data: "",
-    sluge: "",
+    sluge: "", // Agar slug deb nomlamoqchi bo'lsangiz, 'slug' qilsangiz to'g'riroq bo'ladi
   });
 
-  // Toolbarda qaysi funksiyalar chiqishini belgilash (Bold, Italic, Underline, List va h.k.)
   const modules = {
     toolbar: [
       [{ header: [1, 2, 3, false] }],
@@ -25,11 +25,65 @@ function Admin() {
       ["link", "clean"],
     ],
   };
-
-  const handleSubmit = (event) => {
+  const api = import.meta.env.API_URL;
+  // 🚀 BACKENDGA YUBORISH FUNKSIYASI
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    console.log("Yuborilayotgan maqola:", yangiMaqola);
-    // Maqolani saqlash mantiqi shu yerda bo'ladi
+    setLoading(true);
+
+    const generateRandomSlug = () => {
+      const belgilar =
+        "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+      let slug = "";
+
+      for (let i = 0; i < 7; i++) {
+        // Tasodifiy indeksni aniqlaymiz
+        const randomIndeks = Math.floor(Math.random() * belgilar.length);
+        // O'sha indeksdagi belgini slug'ga qo'shamiz
+        slug += belgilar.charAt(randomIndeks);
+      }
+
+      return slug;
+    };
+
+    const yuboriladiganMaqola = {
+      ...yangiMaqola,
+      data: new Date().toISOString(),
+      sluge: generateRandomSlug(),
+    };
+
+    try {
+      // 🌐 Backend URL manzilini shu yerga yozasiz
+      const response = await fetch(`${api}/api/post`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          // Agar backendda token so'ralsa, quyidagini yoqing:
+          // "Authorization": `Bearer ${Sizning_Tokeniz}`,
+        },
+        body: JSON.stringify(yuboriladiganMaqola),
+      });
+
+      if (response.ok) {
+        alert("Maqola muvaffaqiyatli saqlandi! 🎉");
+        // Formani tozalash
+        setYangiMaqola({
+          sarlavha: "",
+          rasm: "",
+          matn: "",
+          data: "",
+          sluge: "",
+        });
+      } else {
+        const errorData = await response.json();
+        alert(`Xatolik yuz berdi: ${errorData.message || "Xatolik"}`);
+      }
+    } catch (err) {
+      console.error("Ulanishda xatolik:", err);
+      alert("Server bilan ulanishda xatolik yuz berdi! ❌");
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleLoginSubmit = (e) => {
@@ -112,8 +166,8 @@ function Admin() {
             />
           </div>
 
-          <button type="submit" className="submit-btn">
-            Maqola tayyor
+          <button type="submit" className="submit-btn" disabled={loading}>
+            {loading ? "Yuborilmoqda..." : "Maqola tayyor"}
           </button>
         </form>
       </div>

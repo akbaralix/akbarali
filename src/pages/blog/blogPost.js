@@ -58,3 +58,19 @@ export const blogPosts = [
       "Yaxshi Front-end dasturchi faqat kod yozmaydi, u foydalanuvchi tajribasini (UX) ham o'ylaydi. Portfoliomni yig'ishda modulli JavaScript animatsiyalari va pastdan chiquvchi zamonaviy menyulardan (Bottom Sheets) foydalandib ko'rdim. UI qismini jonlantirish uchun esa Google Noto-ning miltillaydigan 3D emojilarini integratsiya qildim. Eng asosiysi - animatsiyalar saytni sekinlashtirmasligi kerak. Buning uchun CSS transition-lar va engil render mantiqidan foydalanish eng to'g'ri yo'ldir.",
   },
 ];
+import axios from "axios";
+
+const url = import.meta.env.API_URL;
+
+export const getPosts = async () => {
+  const { data } = await axios.get(`${url}/post`);
+  return data.data;
+};
+
+export const getPostBySlug = async (slug) => {
+  const { data } = await axios.get(`${url}/post`);
+  // Agar backendda maxsus /api/post/:slug endpointi bo'lsa, to'g'ridan-to'g'ri o'shanga so'rov yuborish yaxshi.
+  // Agar hozircha bo'lmasa, barcha postlar ichidan slug bo'yicha qidiramiz:
+  const barchaPostlar = data.data;
+  return barchaPostlar.find((item) => item.sluge === slug);
+};
