@@ -25,7 +25,7 @@ function Admin() {
       ["link", "clean"],
     ],
   };
-  const api = import.meta.env.API_URL;
+  const api = import.meta.env.VITE_API_URL;
   // 🚀 BACKENDGA YUBORISH FUNKSIYASI
   const handleSubmit = async (event) => {
     event.preventDefault();
