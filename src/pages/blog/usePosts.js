@@ -23,9 +23,9 @@ export function usePostDetail(slug) {
     isLoading,
     error,
   } = useQuery({
-    queryKey: ["post", slug], // har bir slug uchun alohida kesh kaliti
+    queryKey: ["post", slug],
     queryFn: () => getPostBySlug(slug),
-    enabled: !!slug, // faqat slug mavjud bo'lgandagina so'rov yuboriladi
+    enabled: !!slug,
   });
 
   return { post, isLoading, error };

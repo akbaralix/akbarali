@@ -117,6 +117,16 @@ textarea::placeholder {
 textarea:focus {
   outline: 1px solid rgb(74, 54, 202);
 }
+/* 📌 REACT QUILL PLACEHOLDER RANGINI OQARTIRISH */
+.editor-group .ql-container .ql-blank::before {
+  color: rgba(
+    255,
+    255,
+    255,
+    0.6
+  ) !important; /* To'liq oq emas, sal xiraroq oq (yaxshi o'qilishi uchun) */
+  font-style: normal !important; /* Standart qiymatdagi og'ma (italic) uslubni yo'qotadi */
+}
 
 .admin-form textarea {
   resize: none;
