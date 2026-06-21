@@ -105,13 +105,21 @@ function Admin() {
           "Content-Type": "application/json",
         },
       });
+
+      // 🟢 Agar server 404 yoki 500 qaytarsa, shu yerda ushlaymiz:
+      if (!response.ok) {
+        alert("Server bu manzilni topa olmadi (404) yoki boshqa xato bo'ldi.");
+        return;
+      }
+
+      alert("Muvaffaqiyatli o'chirildi!");
+      window.location.reload(); // sahifani yangilash
     } catch (err) {
       console.log(err);
-      alert("Postni o'chirishda hatolik yuz berdi");
+      alert("Serverga ulanishda xatolik yuz berdi");
     }
   };
 
-  // 1. Birinchi navbatda avtorizatsiyani tekshiramiz (Parol so'rash ekrani yuklanishdan oldin turishi kerak)
   if (!isAuthorized) {
     return (
       <div className="admin-login-wrapper">

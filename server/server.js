@@ -68,15 +68,24 @@ app.get("/api/post", async (req, res) => {
     });
   }
 });
-app.delete("/api/post:id", async (req, res) => {
+
+// 🟢 TO'G'RI BACKEND KODI:
+app.delete("/api/post/:id", async (req, res) => {
   try {
     const postId = req.params.id;
 
-    const ochirlganPost = await Post.findByIdAndDelete(postId);
+    const ocharotganPost = await Post.findByIdAndDelete(postId);
+
+    if (!ocharotganPost) {
+      return res.status(404).json({ message: "Maqola topilmadi! ❌" });
+    }
+
+    res.status(200).json({ message: "Maqola o'chirildi! 🎉" });
   } catch (err) {
-    console.log(err);
+    res.status(500).json({ error: err.message });
   }
 });
+
 // 🖥️ Serverni ishga tushirish
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
