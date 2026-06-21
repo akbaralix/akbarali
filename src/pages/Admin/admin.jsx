@@ -1,20 +1,24 @@
 import { useState } from "react";
+import { Link } from "react-router-dom"; // 👈 LINK IMPORT QILINDI
 import ReactQuill from "react-quill-new";
-import "react-quill-new/dist/quill.snow.css";
+import { usePosts } from "../blog/usePosts";
+import { FaRegTrashCan } from "react-icons/fa6";
+
 import "./admin.css";
+import "react-quill-new/dist/quill.snow.css";
 
 function Admin() {
   const [password, setPassword] = useState("");
   const [isAuthorized, setIsAuthorized] = useState(false);
-  const [error, setError] = useState("");
-  const [loading, setLoading] = useState(false); // 🔄 Yuklanish holati uchun
+  const [loginError, setLoginError] = useState(""); // 👈 Ismi o'zgartirildi (chalkashmaslik uchun)
+  const [loading, setLoading] = useState(false);
 
   const [yangiMaqola, setYangiMaqola] = useState({
     sarlavha: "",
     rasm: "",
     matn: "",
     data: "",
-    sluge: "", // Agar slug deb nomlamoqchi bo'lsangiz, 'slug' qilsangiz to'g'riroq bo'ladi
+    sluge: "",
   });
 
   const modules = {
@@ -25,8 +29,12 @@ function Admin() {
       ["link", "clean"],
     ],
   };
+
+  // postsError deb qayta nomlab oldik, loginError bilan urishib ketmaydi
+  const { posts, isLoading, error: postsError } = usePosts();
+
   const api = import.meta.env.VITE_API_URL;
-  // 🚀 BACKENDGA YUBORISH FUNKSIYASI
+
   const handleSubmit = async (event) => {
     event.preventDefault();
     setLoading(true);
@@ -35,14 +43,10 @@ function Admin() {
       const belgilar =
         "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
       let slug = "";
-
       for (let i = 0; i < 7; i++) {
-        // Tasodifiy indeksni aniqlaymiz
         const randomIndeks = Math.floor(Math.random() * belgilar.length);
-        // O'sha indeksdagi belgini slug'ga qo'shamiz
         slug += belgilar.charAt(randomIndeks);
       }
-
       return slug;
     };
 
@@ -53,20 +57,16 @@ function Admin() {
     };
 
     try {
-      // 🌐 Backend URL manzilini shu yerga yozasiz
       const response = await fetch(`${api}/api/post`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          // Agar backendda token so'ralsa, quyidagini yoqing:
-          // "Authorization": `Bearer ${Sizning_Tokeniz}`,
         },
         body: JSON.stringify(yuboriladiganMaqola),
       });
 
       if (response.ok) {
         alert("Maqola muvaffaqiyatli saqlandi! 🎉");
-        // Formani tozalash
         setYangiMaqola({
           sarlavha: "",
           rasm: "",
@@ -92,12 +92,26 @@ function Admin() {
 
     if (password === securePassword) {
       setIsAuthorized(true);
-      setError("");
+      setLoginError("");
     } else {
-      setError("Xato parol kiritildi! ❌");
+      setLoginError("Xato parol kiritildi! ❌");
+    }
+  };
+  const handleDeletePost = async (id) => {
+    try {
+      const response = await fetch(`${api}/api/post/${id}`, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+    } catch (err) {
+      console.log(err);
+      alert("Postni o'chirishda hatolik yuz berdi");
     }
   };
 
+  // 1. Birinchi navbatda avtorizatsiyani tekshiramiz (Parol so'rash ekrani yuklanishdan oldin turishi kerak)
   if (!isAuthorized) {
     return (
       <div className="admin-login-wrapper">
@@ -112,13 +126,51 @@ function Admin() {
               required
             />
           </div>
-          {error && <p className="error-message">{error}</p>}
+          {loginError && <p className="error-message">{loginError}</p>}
           <button type="submit">Tasdiqlash</button>
         </form>
       </div>
     );
   }
 
+  // 2. Agar parol to'g'ri bo'lsa va postlar yuklanayotgan bo'lsa, skeleton ko'rsatiladi
+  if (isLoading) {
+    return (
+      <div className="blog-container">
+        <div
+          className="skeleton skeleton-title"
+          style={{ marginBottom: "20px", width: "150px", height: "32px" }}
+        ></div>
+        <div className="blog-grid">
+          {[1, 2, 3, 4, 5, 6].map((n) => (
+            <div key={n} className="skeleton-card-wrapper">
+              <div
+                className="skeleton skeleton-text"
+                style={{ width: "80px", height: "16px", marginBottom: "10px" }}
+              ></div>
+              <div className="blog-card skeleton-card">
+                <div
+                  className="skeleton skeleton-text"
+                  style={{ width: "90%", height: "28px", marginBottom: "20px" }}
+                ></div>
+                <div className="skeleton skeleton-img"></div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    );
+  }
+
+  // 3. Agar bazadan postlarni olishda xatolik bo'lsa
+  if (postsError)
+    return (
+      <div className="error-message">
+        Postlarni yuklashda xatolik yuz berdi...
+      </div>
+    );
+
+  // 4. Parol to'g'ri va yuklanish tugagan bo'lsa, asosiy admin panel ochiladi
   return (
     <div className="admin">
       <div className="statistik-container"></div>
@@ -152,7 +204,6 @@ function Admin() {
             />
           </div>
 
-          {/* 📝 TAYYOR TOOLBARLI EKRAN */}
           <div className="form-group editor-group">
             <label>Maqola matni</label>
             <ReactQuill
@@ -170,6 +221,33 @@ function Admin() {
             {loading ? "Yuborilmoqda..." : "Maqola tayyor"}
           </button>
         </form>
+      </div>
+
+      <div className="blog-container">
+        <h2 style={{ marginBottom: "20px" }}>Mavjud bloglar</h2>
+        <div className="blog-grid">
+          {posts &&
+            posts.map((post) => (
+              <div key={post.id}>
+                <div className="post-date">
+                  <p>{new Date(post.data).toLocaleDateString("uz-UZ")}</p>
+                  <button onClick={() => handleDeletePost(post._id)}>
+                    <FaRegTrashCan />
+                  </button>
+                </div>
+                <div className="blog-card">
+                  <Link to={`/blog/${post.sluge}`}>
+                    <div>
+                      <h2>{post.sarlavha}</h2>
+                    </div>
+                    <div className="blog-img">
+                      <img src={post.rasm} alt={post.sarlavha} />
+                    </div>
+                  </Link>
+                </div>
+              </div>
+            ))}
+        </div>
       </div>
     </div>
   );

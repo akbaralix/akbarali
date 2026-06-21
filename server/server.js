@@ -68,7 +68,15 @@ app.get("/api/post", async (req, res) => {
     });
   }
 });
+app.delete("api/post:id", async (req, res) => {
+  try {
+    const postId = req.params.id;
 
+    const ochirlganPost = await Post.findByIdAndDelete(postId);
+  } catch (err) {
+    console.log(err);
+  }
+});
 // 🖥️ Serverni ishga tushirish
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
