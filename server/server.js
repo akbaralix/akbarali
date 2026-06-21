@@ -68,7 +68,7 @@ app.get("/api/post", async (req, res) => {
     });
   }
 });
-app.delete("api/post:id", async (req, res) => {
+app.delete("/api/post:id", async (req, res) => {
   try {
     const postId = req.params.id;
 
