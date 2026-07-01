@@ -1,4 +1,5 @@
 import React from "react";
+import SEO from "../../components/SEO";
 import "./about.css";
 
 function About() {
@@ -22,6 +23,11 @@ function About() {
 
   return (
     <div className="about-container">
+      <SEO 
+        title="Men Haqimda" 
+        description="Men Akbarali — Muammolarga Raqamli Yechim Topuvchi Muhandis. Mening dasturlashdagi yo'lim, prinsiplarim va erishgan yutuqlarim haqida bu yerda bilib oling."
+        keywords="Tursunboyev Akbarali haqida, Akbarali, tarjimai hol, prinsiplar, tajriba"
+      />
       {/* 👤 1. Asosiy Tanishtiruv Seksiyasi */}
       <div className="about-hero">
         <h1 className="about-title">Men Haqimda</h1>

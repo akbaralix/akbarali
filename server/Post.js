@@ -6,6 +6,7 @@ const postSchema = new mongoose.Schema({
   matn: { type: String },
   data: { type: String },
   sluge: { type: String },
+  korildi: { type: Number, default: 0 },
 });
 
 const Post = mongoose.model("Post", postSchema);

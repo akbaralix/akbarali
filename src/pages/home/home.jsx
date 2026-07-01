@@ -15,6 +15,7 @@ import { GrMysql } from "react-icons/gr";
 import { BiLogoPostgresql } from "react-icons/bi";
 
 import { SiVite, SiMongodb } from "react-icons/si";
+import SEO from "../../components/SEO";
 import "./home.css";
 
 function Home() {
@@ -55,6 +56,11 @@ function Home() {
 
   return (
     <>
+      <SEO 
+        title="Asosiy sahifa" 
+        description="Salom Men Akbarali. Full-Stack (Frontend & Backend) dasturchiman. 2 yildan buyon zamonaviy veb-saytlar va murakkab tizimlarni qurish bilan shug'ullanaman."
+        keywords="Tursunboyev Akbarali, Akbarali, portfolio, dasturchi, fullstack, python, javascript, react, mongodb"
+      />
       <div className="home-container">
         <div className="home-content">
           <div className="home-text">

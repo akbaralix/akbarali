@@ -1,15 +1,19 @@
-import React from "react";
 import { Link } from "react-router-dom";
 import { usePosts } from "./usePosts";
+import SEO from "../../components/SEO";
 import "./blog.css";
 
 function Blog() {
   const { posts, isLoading, error } = usePosts();
 
-  // 🔴 YOUTUBE USLUBIDAGI SKELETON LOADING
   if (isLoading) {
     return (
       <div className="blog-container">
+        <SEO 
+          title="Blog" 
+          description="Tursunboyev Akbarali - Dasturlash, sun'iy intellekt va veb-texnologiyalar haqidagi shaxsiy fikrlar va maqolalar blogi."
+          keywords="Tursunboyev Akbarali blogi, dasturlash maqolalari, python maqola, javascript uzbek, IT blog uzbek"
+        />
         <div
           className="skeleton skeleton-title"
           style={{ marginBottom: "20px", width: "150px", height: "32px" }}
@@ -37,12 +41,17 @@ function Blog() {
     );
   }
 
+  // if (posts) return <div>Hozircha postlar yoq</div>;
   if (error) return <div className="error-message">Xatolik yuz berdi...</div>;
 
   return (
     <div className="blog-container">
-      <h2 style={{ marginBottom: "20px" }}>Blog</h2>
-
+      <SEO 
+        title="Blog" 
+        description="Tursunboyev Akbarali - Dasturlash, sun'iy intellekt va veb-texnologiyalar haqidagi shaxsiy fikrlar va maqolalar blogi."
+        keywords="Tursunboyev Akbarali blogi, dasturlash maqolalari, python maqola, javascript uzbek, IT blog uzbek"
+      />
+      <h2>Bu yerda men o'z haqimda yozaman</h2>
       <div className="blog-grid">
         {posts.map((post) => (
           <div key={post.id}>

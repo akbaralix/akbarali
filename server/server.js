@@ -4,17 +4,19 @@ import connectDB from "./DB/db.js";
 import Post from "./Post.js";
 import cors from "cors";
 
-dotenv.config();
+import path from "path";
+import { fileURLToPath } from "url";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+dotenv.config({ path: path.resolve(__dirname, ".env") });
 const app = express();
 app.use(cors());
 app.use(express.json());
 
-// 🔌 Ma'lumotlar bazasiga ulanish
 connectDB();
 
-// 🧱 Middleware: Kelayotgan JSON ma'lumotlarni o'qish uchun juda muhim!
-
-// 🚀 1. MA'LUMOTNI BAZAGA SAQLASH (CREATE)
 app.post("/api/post", async (req, res) => {
   try {
     const { sarlavha, rasm, matn, data, sluge } = req.body;
@@ -66,6 +68,28 @@ app.get("/api/post", async (req, res) => {
       message: "Ma'lumotlarni yuklashda xatolik yuz berdi! ❌",
       error: error.message,
     });
+  }
+});
+
+app.post("/api/post/view/:id", async (req, res) => {
+  try {
+    const postId = req.params.id;
+
+    const updatedPost = await Post.findByIdAndUpdate(
+      postId,
+      { $inc: { korildi: 1 } },
+      { returnDocument: "after" },
+    );
+
+    if (!updatedPost) {
+      return res.status(404).json({ message: "Post topilmadi" });
+    }
+
+    // 2. Frontendga hammasi yaxshi bo'lganini bildiramiz
+    res.status(200).json({ success: true, views: updatedPost.views });
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ message: "Serverda xatolik yuz berdi" });
   }
 });
 

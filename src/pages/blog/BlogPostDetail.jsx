@@ -1,30 +1,39 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { useParams, Link, useNavigate } from "react-router-dom";
 import { usePostDetail } from "./usePosts.js"; // Serverdan ma'lumotni yuklovchi hook
 import { IoArrowBackOutline, IoClose } from "react-icons/io5";
 import { FaRegClock } from "react-icons/fa";
+import SEO from "../../components/SEO";
 
-// 🚀 Rich Text (Quill) klasslari va formatlari ishlamasligini oldini olish uchun import
 import "react-quill-new/dist/quill.bubble.css";
-import "./blog.css"; // Barcha vizual va rasm zoom stillari shu faylda
+import "./blog.css";
 
 function BlogPostDetail() {
   const { slug } = useParams();
-  const navigate = useNavigate();
-
-  // Rasm modal holati
   const [isZoomed, setIsZoomed] = useState(false);
-
-  // 📐 Telegram uslubida sudrab yopish uchun koordinata state'lari
   const [translateY, setTranslateY] = useState(0);
   const [opacity, setOpacity] = useState(1);
   const isDragging = useRef(false);
   const startY = useRef(0);
-
-  // 🌐 Serverdan maqola ma'lumotlarini olish
   const { post, isLoading, error } = usePostDetail(slug);
 
-  // 1. Yuklanish holati (Loading)
+  const navigate = useNavigate();
+  const api = import.meta.env.VITE_API_URL;
+  useEffect(() => {
+    // 1. Agar post hali yuklanmagan bo'lsa, funksiyani bajarishni to'xtatamiz (Xavfsiz usul)
+    if (!post?._id) return;
+
+    // 2. Agar foydalanuvchi bu postni hali KO'RMAGAN bo'lsa (shart oldiga ! qo'yildi)
+    if (!document.cookie.includes(`viewed_${post._id}`)) {
+      // Backendga ko'rishlar sonini oshirish uchun so'rov jo'natamiz
+      fetch(`${api}/api/post/view/${post._id}`, { method: "POST" }).catch(
+        (err) => console.error("Views error:", err),
+      ); // Xatolikni ushlash
+
+      // Brauzerga ushbu post ko'rilganligi haqida cookie yozamiz (24 soatga)
+      document.cookie = `viewed_${post._id}=true; max-age=86400; path=/`;
+    }
+  }, [post?._id]); // Bu yerga ham post?._id o'rnatildi
   if (isLoading) {
     return (
       <div
@@ -63,7 +72,6 @@ function BlogPostDetail() {
     );
   }
 
-  // --- 🦾 Telegram uslubida sudrab yopish algoritmlari ---
   const handleTouchStart = (e) => {
     isDragging.current = true;
     // Telefon yoki kompyuter ekanligini aniqlab, boshlang'ich Y o'qi nuqtasini ushlaymiz
@@ -86,11 +94,9 @@ function BlogPostDetail() {
   const handleTouchEnd = () => {
     isDragging.current = false;
 
-    // Agar rasm 120 pikseldan ko'proq tepaga yoki pastga tortilgan bo'lsa - yopiladi
     if (Math.abs(translateY) > 120) {
       closeZoom();
     } else {
-      // Chegaradan o'tmagan bo'lsa, elastik bo'lib silliq o'z joyiga qaytadi
       setTranslateY(0);
       setOpacity(1);
     }
@@ -102,9 +108,16 @@ function BlogPostDetail() {
     setOpacity(1);
   };
 
+  const cleanDesc = post.matn ? post.matn.replace(/<[^>]*>/g, '').substring(0, 150) + "..." : "";
+
   return (
     <div className="blog-post">
-      {/* ⬅️ Orqaga qaytish tugmasi */}
+      <SEO 
+        title={post.sarlavha}
+        description={cleanDesc}
+        image={post.rasm}
+        type="article"
+      />
       <button
         className="back-btn"
         onClick={() => navigate("/blog")}
@@ -112,6 +125,7 @@ function BlogPostDetail() {
       >
         <IoArrowBackOutline />
       </button>
+      <p>{post.korildi}</p>
 
       {/* 📑 Maqola Sarlavhasi va Sanasi */}
       <div className="blog-post-header">

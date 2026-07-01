@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { IoClose } from "react-icons/io5";
+import SEO from "../../components/SEO";
 
 import "./contact.css";
 
@@ -52,6 +53,11 @@ function Contact() {
 
   return (
     <div className="contact-container">
+      <SEO 
+        title="Aloqa" 
+        description="Tursunboyev Akbarali bilan bog'lanish. Savollar, loyihalar va hamkorlik takliflari bo'yicha bu yerda xabar qoldirishingiz mumkin."
+        keywords="Tursunboyev Akbarali aloqa, Akbarali bilan bog'lanish, dasturchi kontakt, hamkorlik"
+      />
       {contactMsg && <ContactSendMsg />}
 
       <div className="contact-header">

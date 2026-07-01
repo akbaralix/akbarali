@@ -3,6 +3,12 @@ import { FaGithub, FaTelegram, FaGlobe, FaBookOpen } from "react-icons/fa";
 import { FiExternalLink } from "react-icons/fi";
 import { MdOutlineGridView } from "react-icons/md"; // Hamma loyihalarni ko'rish uchun ikonka
 
+import taxiImg from "../../assets/taxi.jpg";
+import profilmImg from "../../assets/profilm.png";
+import slydAiImg from "../../assets/SlydAI.jpg";
+import akaStarImg from "../../assets/AkaStar.jpg";
+import SEO from "../../components/SEO";
+
 import "./projects.css";
 
 function Projects() {
@@ -12,7 +18,7 @@ function Projects() {
   const projectsData = [
     {
       id: 1,
-      img: "/src/assets/taxi.jpg",
+      img: taxiImg,
       title: "Telegramda taksi bot",
       projectUrl: "https://t.me/OzimizniTaksiBot",
       projectGithubUrl: "https://github.com/akbaral1/OzimizniTaksiBot",
@@ -24,7 +30,7 @@ function Projects() {
     },
     {
       id: 2,
-      img: "/src/assets/profilm.png",
+      img: profilmImg,
       title: "Profilm",
       projectUrl: "https://profilimuz.web.app",
       projectGithubUrl: "https://github.com/akbaralix/profilm",
@@ -36,7 +42,7 @@ function Projects() {
     },
     {
       id: 3,
-      img: "/src/assets/SlydAI.jpg",
+      img: slydAiImg,
       title: "Slaydlar Yaratuvchi Telegram bot",
       projectUrl: "https://github.com/akbaralix/SlydAi",
       projectGithubUrl: "https://github.com/akbaral1/OzimizniTaksiBot",
@@ -48,7 +54,7 @@ function Projects() {
     },
     {
       id: 4,
-      img: "/src/assets/AkaStar.jpg",
+      img: akaStarImg,
       title: "Referal orqalik stars ishlovchi bot",
       projectUrl: "https://github.com/akbaralix/SlydAi",
       projectGithubUrl: "https://github.com/akbaral1/OzimizniTaksiBot",
@@ -95,6 +101,11 @@ function Projects() {
 
   return (
     <div className="projects-container">
+      <SEO 
+        title="Mening Loyihalarim" 
+        description="Tursunboyev Akbarali - Fullstack loyihalari, telegram botlar va web-ilovalari ro'yxati. G'oyadan boshlab to toza kod va tayyor deploymentgacha."
+        keywords="Tursunboyev Akbarali loyihalari, telegram botlar, react loyihalar, portfolio projects"
+      />
       {/* 🚀 Sektor Sarlavhasi */}
       <div className="projects-header">
         <h1 className="projects-main-title">Mening Loyihalarim</h1>
