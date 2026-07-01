@@ -16,6 +16,10 @@
   -webkit-tap-highlight-color: transparent;
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
 body {
   background-color: var(--bg);
   color: #fff;
@@ -32,8 +36,4 @@ button {
 a {
   text-decoration: none;
   font-size: 16px;
-}
-
-li {
-  /* list-style: none; */
 }

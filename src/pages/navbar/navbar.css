@@ -3,8 +3,8 @@
   align-items: center;
   justify-content: space-between;
 
-  background: rgba(16, 17, 17, 0.445);
-  backdrop-filter: blur(20px) saturate(130%) brightness(108%);
+  background: rgba(16, 17, 17, 0.4);
+  backdrop-filter: blur(15px) saturate(150%) brightness(140%);
 
   padding: 10px 30px;
   position: fixed;
