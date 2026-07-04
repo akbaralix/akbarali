@@ -56,9 +56,8 @@ function Home() {
 
   return (
     <>
-      <SEO 
-        title="Asosiy sahifa" 
-        description="Salom Men Akbarali. Full-Stack (Frontend & Backend) dasturchiman. 2 yildan buyon zamonaviy veb-saytlar va murakkab tizimlarni qurish bilan shug'ullanaman."
+      <SEO
+        title="Asosiy sahifa"
         keywords="Tursunboyev Akbarali, Akbarali, portfolio, dasturchi, fullstack, python, javascript, react, mongodb"
       />
       <div className="home-container">

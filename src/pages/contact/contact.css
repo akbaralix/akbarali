@@ -264,3 +264,8 @@ a.contact-card:hover {
     padding: 25px;
   }
 }
+@media (max-width: 900px) {
+  .contact-main-title {
+    font-weight: 500;
+  }
+}

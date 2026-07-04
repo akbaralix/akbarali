@@ -1,6 +1,3 @@
-.projects-container {
-}
-
 .projects-header {
   text-align: center;
   margin-bottom: 60px;
@@ -111,8 +108,7 @@
 }
 
 .project-card:hover {
-  transform: translateY(-8px);
-  background: rgba(54, 54, 198, 0.03);
+  transform: translateY(-5px);
 }
 
 .project-card-top {
@@ -158,6 +154,13 @@
 
 .project-card-body {
   flex-grow: 1;
+}
+.project-card-body button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: none;
+  border: none;
 }
 
 .project-title-text {
@@ -245,6 +248,9 @@
 
 @media (max-width: 768px) {
   .projects-main-title {
+    font-weight: 500;
+  }
+  .projects-main-title {
     font-size: 2.2rem;
     line-height: 2.4rem;
   }
@@ -267,5 +273,116 @@
   .project-btn-github {
     width: 100%;
     border-radius: 40px;
+  }
+}
+
+/* 📌 PROJECT DETAIL MODAL */
+.project-detail-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 11000;
+  padding: 20px;
+  animation: fadeIn 0.3s ease;
+}
+
+.project-detail-modal {
+  max-width: 600px;
+  width: 100%;
+  max-height: 90vh;
+  overflow-y: auto;
+  position: relative;
+  padding: 30px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  transition: transform 0.3s ease;
+}
+
+.close-detail-outside-btn {
+  position: fixed;
+  top: 30px;
+  right: 30px;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  box-shadow: var(--glass-shadow);
+  color: #fff;
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  cursor: pointer;
+  z-index: 12000;
+  transition: all 0.2s ease;
+}
+
+.detail-img {
+  width: 100%;
+  height: 300px;
+  object-fit: cover;
+  border-radius: 15px;
+}
+
+.detail-type {
+  align-self: flex-start;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #3636c6;
+  background: rgba(54, 54, 198, 0.1);
+  padding: 6px 14px;
+  border-radius: 20px;
+}
+
+.detail-desc {
+  font-size: 1rem;
+  color: #ccc;
+  line-height: 1.6;
+}
+
+.detail-tech {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@media (max-width: 768px) {
+  .project-detail-overlay {
+    padding: 0;
+    background-color: #020202;
+  }
+  .project-detail-modal {
+    max-width: 100%;
+    height: 100%;
+    max-height: 100vh;
+    border-radius: 0;
+    padding: 20px;
+  }
+
+  .close-detail-outside-btn {
+    top: 20px;
+    right: 20px;
+    background: rgba(0, 0, 0, 0.5);
+  }
+
+  .detail-img {
+    height: 200px;
   }
 }
