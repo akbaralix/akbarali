@@ -52,6 +52,7 @@ function Admin() {
 
     const yuboriladiganMaqola = {
       ...yangiMaqola,
+      matn: yangiMaqola.matn ? yangiMaqola.matn.replace(/&nbsp;/g, " ") : "",
       data: new Date().toISOString(),
       sluge: generateRandomSlug(),
     };

@@ -21,11 +21,14 @@ app.post("/api/post", async (req, res) => {
   try {
     const { sarlavha, rasm, matn, data, sluge } = req.body;
 
+    // Matndagi barcha &nbsp; belgilarini oddiy bo'shliqqa o'zgartiramiz
+    const tozalanganMatn = matn ? matn.replace(/&nbsp;/g, " ") : "";
+
     // Yangi post ob'ektini yaratamiz
     const newPost = new Post({
       sarlavha,
       rasm,
-      matn,
+      matn: tozalanganMatn,
       data,
       sluge,
     });

@@ -5,3 +5,9 @@
   margin-top: 100px;
   padding: 1rem;
 }
+
+@media (max-width: 768px) {
+  .App {
+    margin-top: 80px;
+  }
+}

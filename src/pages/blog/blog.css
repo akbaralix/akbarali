@@ -20,13 +20,17 @@
   flex-direction: column;
 }
 
+.post-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
 .post-date {
   padding: 6px 10px;
   font-size: 13px;
   color: #888888;
   display: flex;
   align-items: center;
-  justify-content: space-between;
 }
 .post-date button {
   display: flex;
@@ -71,6 +75,9 @@
   width: 100%;
   margin: 0 auto;
   padding: 20px;
+  word-break: normal;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
 }
 
 .back-btn {
@@ -183,6 +190,17 @@
     "Segoe UI",
     Roboto,
     sans-serif;
+
+  /* Reset height and overflow from Quill defaults */
+  height: auto !important;
+  overflow: visible !important;
+}
+
+.post-content.ql-editor,
+.post-content.ql-editor * {
+  word-break: normal !important;
+  word-wrap: break-word !important;
+  overflow-wrap: break-word !important;
 }
 
 /* 1. Abzatslar (Paragraphs) orasidagi masofa */
@@ -327,6 +345,7 @@
   width: 45px;
   height: 45px;
   background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(20px);
   box-shadow: var(--glass-shadow);
   border: none;
   border-radius: 50%;
@@ -337,7 +356,7 @@
   justify-content: center;
   cursor: pointer;
   transition: all 0.2s ease;
-  z-index: 10000; /* ✅ To'g'rilandi */
+  z-index: 10000;
 }
 
 .zoom-close-btn:hover {
@@ -370,6 +389,7 @@
 
   .blog-card h2 {
     font-size: 1.1rem;
+    align-items: start;
     -webkit-line-clamp: 2;
   }
 
@@ -387,16 +407,15 @@
 
   .zoom-image-wrapper {
     max-width: 100%;
-    padding: 0 10px;
   }
 
   .zoom-image-wrapper img {
-    border-radius: 8px;
+    border-radius: 0px;
     max-width: 100%;
   }
 
   .zoom-close-btn {
-    top: 40px; /* Telefonda sal teparoqqa surildi */
+    top: 20px;
     right: 15px;
     width: 40px;
     height: 40px;

@@ -2,7 +2,7 @@ import React from "react";
 import { Helmet } from "react-helmet-async";
 
 function SEO({ title, description, keywords, image, url, type = "website" }) {
-  const fullTitle = title || "Dasturchi Portfoliosi";
+  const fullTitle = title || "A T";
   const defaultDesc =
     "Tursunboyev Akbarali - Fullstack dasturchi portfoliosi. Bu yerda mening loyihalarim, qiziqarli texnologik maqolalarim va bog'lanish ma'lumotlari joylashgan.";
   const metaDesc = description || defaultDesc;
@@ -11,7 +11,6 @@ function SEO({ title, description, keywords, image, url, type = "website" }) {
 
   return (
     <Helmet>
-      {/* Sarlavha va Tavsif */}
       <title>{fullTitle}</title>
       <meta name="description" content={metaDesc} />
       {keywords && <meta name="keywords" content={keywords} />}

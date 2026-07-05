@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from "react";
 import { useParams, Link, useNavigate } from "react-router-dom";
 import { usePostDetail } from "./usePosts.js"; // Serverdan ma'lumotni yuklovchi hook
 import { IoArrowBackOutline } from "react-icons/io5";
-import { FaRegClock } from "react-icons/fa";
+import { FaRegClock, FaEye } from "react-icons/fa";
 import SEO from "../../components/SEO";
 import ImageZoom from "../../components/ImageZoom";
 
@@ -69,11 +69,13 @@ function BlogPostDetail() {
     );
   }
 
-  const cleanDesc = post.matn ? post.matn.replace(/<[^>]*>/g, '').substring(0, 150) + "..." : "";
+  const cleanDesc = post.matn
+    ? post.matn.replace(/<[^>]*>/g, "").replace(/&nbsp;/g, " ").substring(0, 150) + "..."
+    : "";
 
   return (
     <div className="blog-post">
-      <SEO 
+      <SEO
         title={post.sarlavha}
         description={cleanDesc}
         image={post.rasm}
@@ -86,18 +88,20 @@ function BlogPostDetail() {
       >
         <IoArrowBackOutline />
       </button>
-      <p>{post.korildi}</p>
-
-      {/* 📑 Maqola Sarlavhasi va Sanasi */}
       <div className="blog-post-header">
         <h2>{post.sarlavha}</h2>
-        <p className="post-date">
-          <FaRegClock />
-          {new Date(post.data).toLocaleDateString("uz-UZ", {})}
-        </p>
-      </div>
+        <div className="post-meta">
+          <p>
+            <FaEye />
+            {post.korildi}
+          </p>
 
-      {/* 🖼️ Asosiy Rasm (Bosganda kattalashadi) */}
+          <p className="post-date">
+            <FaRegClock />
+            {new Date(post.data).toLocaleDateString("uz-UZ", {})}
+          </p>
+        </div>
+      </div>
       <div className="post-img" onClick={() => setIsZoomed(true)}>
         <img
           src={post.rasm}
@@ -105,17 +109,14 @@ function BlogPostDetail() {
           style={{ cursor: "zoom-in" }}
         />
       </div>
-
-      {/* 📝 Rich Text (React Quill) matnini hamma stillari bilan xavfsiz render qilish */}
       <div className="post-content ql-editor">
-        <div dangerouslySetInnerHTML={{ __html: post.matn }} />
+        <div dangerouslySetInnerHTML={{ __html: post.matn ? post.matn.replace(/&nbsp;/g, " ") : "" }} />
       </div>
-
-      <ImageZoom 
-        src={post.rasm} 
-        alt={post.sarlavha} 
-        isOpen={isZoomed} 
-        onClose={() => setIsZoomed(false)} 
+      <ImageZoom
+        src={post.rasm}
+        alt={post.sarlavha}
+        isOpen={isZoomed}
+        onClose={() => setIsZoomed(false)}
       />
     </div>
   );
