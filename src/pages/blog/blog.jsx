@@ -9,8 +9,8 @@ function Blog() {
   if (isLoading) {
     return (
       <div className="blog-container">
-        <SEO 
-          title="Blog" 
+        <SEO
+          title="Blog"
           description="Tursunboyev Akbarali - Dasturlash, sun'iy intellekt va veb-texnologiyalar haqidagi shaxsiy fikrlar va maqolalar blogi."
           keywords="Tursunboyev Akbarali blogi, dasturlash maqolalari, python maqola, javascript uzbek, IT blog uzbek"
         />
@@ -46,8 +46,8 @@ function Blog() {
 
   return (
     <div className="blog-container">
-      <SEO 
-        title="Blog" 
+      <SEO
+        title="Blog"
         description="Tursunboyev Akbarali - Dasturlash, sun'iy intellekt va veb-texnologiyalar haqidagi shaxsiy fikrlar va maqolalar blogi."
         keywords="Tursunboyev Akbarali blogi, dasturlash maqolalari, python maqola, javascript uzbek, IT blog uzbek"
       />

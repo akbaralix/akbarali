@@ -1,5 +1,5 @@
 import React, { useState, useRef } from "react";
-import { IoClose } from "react-icons/io5";
+import { CloseButton } from "./Button";
 
 const ImageZoom = ({ src, alt, isOpen, onClose }) => {
   const [translateY, setTranslateY] = useState(0);
@@ -57,9 +57,7 @@ const ImageZoom = ({ src, alt, isOpen, onClose }) => {
       onTouchMove={handleTouchMove}
       onTouchEnd={handleTouchEnd}
     >
-      <button className="zoom-close-btn" onClick={handleClose}>
-        <IoClose />
-      </button>
+      <CloseButton className="zoom-close-btn" onClick={handleClose} />
 
       <div
         className="zoom-image-wrapper"

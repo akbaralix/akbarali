@@ -31,46 +31,6 @@
   margin-bottom: 20px;
 }
 
-/* Filosofiya kartochkasi */
-.philosophy-card {
-  background: rgba(255, 255, 255, 0.02);
-  border: 1px solid rgba(255, 255, 255, 0.06);
-  padding: 30px;
-  border-radius: 20px;
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
-}
-
-.philosophy-card h5 {
-  font-size: 1.3rem;
-  color: #3636c6;
-  margin-bottom: 15px;
-  font-weight: 600;
-}
-
-.philosophy-card ul {
-  list-style: none;
-  padding: 0;
-}
-
-.philosophy-card ul li {
-  font-size: 0.95rem;
-  line-height: 1.6;
-  color: #a0a0a0;
-  margin-bottom: 15px;
-  position: relative;
-  padding-left: 20px;
-}
-
-.philosophy-card ul li::before {
-  content: "⚡";
-  position: absolute;
-  left: 0;
-  top: 2px;
-  font-size: 0.9rem;
-}
-
 .about-timeline-section {
   margin-top: 100px;
 }

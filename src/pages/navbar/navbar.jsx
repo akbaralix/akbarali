@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link, NavLink } from "react-router-dom";
-import { IoClose } from "react-icons/io5";
+import { CloseButton } from "../../components/Button";
 
 import {
   FaTimes,
@@ -86,9 +86,7 @@ function Navbar() {
             </Link>
           </div>
 
-          <button className="close-btn" onClick={() => setMenuOpen(false)}>
-            <IoClose />{" "}
-          </button>
+          <CloseButton className="close-btn" onClick={() => setMenuOpen(false)} />
         </div>
 
         <nav>

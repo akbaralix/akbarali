@@ -57,6 +57,7 @@
   font-weight: 400;
   text-overflow: ellipsis;
   font-size: 24px;
+  text-align: left;
   margin: 0;
   flex: 1;
   width: 100%;
@@ -390,7 +391,6 @@
   .blog-card h2 {
     font-size: 1.1rem;
     align-items: start;
-    -webkit-line-clamp: 2;
   }
 
   .blog-card img {

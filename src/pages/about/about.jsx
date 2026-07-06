@@ -16,15 +16,15 @@ function About() {
     },
     {
       year: "2026",
-      title: "Yutuqlar va Haqiqiy Yechimlar",
-      desc: "Bugungi kunda o'rgangan texnologiyalarim orqali real muammolarga yechim topa olaman. Yaqinda institutimizda bo'lib o'tgan tadbirda o'zim nol qilib qurgan saytim tufayli guruhimiz bilan faxrli 1-o'rinni qo'lga kiritdik.",
+      title: "Suniy Intelekt Sohasiga Kirish",
+      desc: "Hozirda men suniy intelekt (AI) yaratishni o'rganish uchun o'zim mustaqil harakat qilib izlanmoqdaman. ",
     },
   ];
 
   return (
     <div className="about-container">
-      <SEO 
-        title="Men Haqimda" 
+      <SEO
+        title="Men Haqimda"
         description="Men Akbarali — Muammolarga Raqamli Yechim Topuvchi Muhandis. Mening dasturlashdagi yo'lim, prinsiplarim va erishgan yutuqlarim haqida bu yerda bilib oling."
         keywords="Tursunboyev Akbarali haqida, Akbarali, tarjimai hol, prinsiplar, tajriba"
       />
@@ -49,28 +49,6 @@ function About() {
               Institutdagi o'qishim va kundalik hayotimni dasturlash bilan
               ajoyib tarzda muvozanatda ushlab turishga harakat qilaman.
             </p>
-          </div>
-
-          <div className="about-philosophy">
-            <div className="philosophy-card">
-              <h5>🎯 Mening Prinsiplarim</h5>
-              <ul>
-                <li>
-                  <strong>Raqamli Balans:</strong> Ijtimoiy tarmoqlardagi
-                  "reels" va foydasiz kontentlardan uzoqlashib, vaqtni faqat
-                  produktiv ishlarga sarflash.
-                </li>
-                <li>
-                  <strong>Toza Kod:</strong> Yozgan kodim kelajakda boshqalar
-                  uchun ham tushunarli va silliq ishlashi shart.
-                </li>
-                <li>
-                  <strong>Doimiy Harakat:</strong> Yangi tillar, ma'lumotlar
-                  bazalari va hayotiy ko'nikmalarni (masalan, haydash)
-                  o'rganishdan to'xtamaslik.
-                </li>
-              </ul>
-            </div>
           </div>
         </div>
       </div>

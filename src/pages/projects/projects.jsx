@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { FaGithub, FaTelegram, FaGlobe, FaBookOpen } from "react-icons/fa";
 import { FiExternalLink } from "react-icons/fi";
 import { MdOutlineGridView } from "react-icons/md";
-import { IoClose } from "react-icons/io5";
+import { CloseButton } from "../../components/Button";
 
 import taxiImg from "../../assets/taxi.jpg";
 import profilmImg from "../../assets/profilm.png";
@@ -235,12 +235,10 @@ Loyiha foydalanuvchilar faolligini oshirish, auditoriyani kengaytirish va mukofo
           className="project-detail-overlay"
           onClick={() => setDetailedProject(null)}
         >
-          <button
+          <CloseButton
             className="close-detail-outside-btn"
             onClick={() => setDetailedProject(null)}
-          >
-            <IoClose />
-          </button>
+          />
           <div
             className="project-detail-modal apple-glass"
             onClick={(e) => e.stopPropagation()}

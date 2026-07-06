@@ -1,20 +1,44 @@
 import React, { useState } from "react";
-import { IoClose } from "react-icons/io5";
+import { CloseButton } from "../../components/Button";
 import SEO from "../../components/SEO";
 
 import "./contact.css";
 
 function Contact() {
   const [contactMsg, setContactMsg] = useState(false);
-
   const [formData, setFormData] = useState({
     name: "",
     email: "",
     message: "",
   });
 
-  const handleSubmit = (e) => {
+  const botToken = import.meta.env.VITE_BOT_TOKEN;
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    const xabar = `📩 Yangi xabar!
+👤 Ism: ${formData.name}
+✉️ Email: ${formData.email}
+💬 Xabar: ${formData.message}
+  `;
+
+    try {
+      const response = await fetch(
+        `https://api.telegram.org/bot${botToken}/sendMessage`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            chat_id: "907402803",
+            text: xabar,
+            parse_mode: "HTML",
+          }),
+        },
+      );
+    } catch (error) {
+      console.error("Xabar yuborishda xatolik yuz berdi:", error);
+    }
+
     setContactMsg(true);
 
     setFormData({ name: "", email: "", message: "" });
@@ -23,12 +47,10 @@ function Contact() {
   const ContactSendMsg = () => {
     return (
       <div className="contact-message-overlay">
-        <button
+        <CloseButton
           className="close-btn contact-message-close-btn"
           onClick={() => setContactMsg(false)}
-        >
-          <IoClose />
-        </button>
+        />
         <div className="contact-message">
           <picture className="success-tg-emoji">
             <source
@@ -42,9 +64,16 @@ function Contact() {
           </picture>
           <h2>Xabaringiz Yuborildi!</h2>
           <p>
-            So'rovingiz qabul qilindi! Agar masalangiz juda shoshilinch bo'lsa,
-            Telegram orqali to'g'ridan-to'g'ri yozishingiz ham mumkin — u yerda
-            doim onlaynman. 📡
+            So'rovingiz qabul qilindi! Agar masalangiz juda shoshilinch bo'lsa,{" "}
+            <a
+              href="https://t.me/akbaral1"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Telegram orqali
+            </a>{" "}
+            to'g'ridan-to'g'ri yozishingiz ham mumkin — u yerda doim onlaynman.
+            📡
           </p>
         </div>
       </div>
@@ -53,8 +82,8 @@ function Contact() {
 
   return (
     <div className="contact-container">
-      <SEO 
-        title="Aloqa" 
+      <SEO
+        title="Aloqa"
         description="Tursunboyev Akbarali bilan bog'lanish. Savollar, loyihalar va hamkorlik takliflari bo'yicha bu yerda xabar qoldirishingiz mumkin."
         keywords="Tursunboyev Akbarali aloqa, Akbarali bilan bog'lanish, dasturchi kontakt, hamkorlik"
       />
@@ -84,7 +113,6 @@ function Contact() {
 
       <div className="contact-grid">
         <div className="contact-info">
-          {/* 🔵 TELEGRAM KARTASI */}
           <a
             href="https://t.me/akbaral1"
             target="_blank"
@@ -92,7 +120,6 @@ function Contact() {
             className="contact-card tg-card"
           >
             <picture className="card-emoji">
-              {/* 1f4e9 - Uchayotgan xat konvertining animatsiyasi 100% ishlaydi */}
               <source
                 srcSet="https://fonts.gstatic.com/s/e/notoemoji/latest/1f680/512.webp"
                 type="image/webp"
@@ -108,8 +135,6 @@ function Contact() {
               <span>Tezkor aloqa va g'oyalar suhbati ⚡</span>
             </div>
           </a>
-
-          {/* 🟢 GITHUB KARTASI */}
           <a
             href="https://github.com/akbaralix"
             target="_blank"
@@ -132,7 +157,6 @@ function Contact() {
               <span>Yozgan kodlarim va ochiq manbalar 🚀</span>
             </div>
           </a>
-
           <div className="contact-card loc-card">
             <picture className="card-emoji">
               <source
@@ -163,7 +187,7 @@ function Contact() {
                 onChange={(e) =>
                   setFormData({ ...formData, name: e.target.value })
                 }
-                placeholder="Akbarali"
+                placeholder="Ismingiz"
               />
             </div>
 
