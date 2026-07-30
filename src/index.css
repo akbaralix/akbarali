@@ -38,7 +38,17 @@ a {
   font-size: 16px;
 }
 
-/* 🍏 Apple-style Frosted Glass (Glassmorphism) */
+img {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+
+  -webkit-user-drag: none;
+  user-drag: none;
+
+  -webkit-touch-callout: none;
+}
 .apple-glass {
   background: rgba(255, 255, 255, 0.05); /* Juda och rangli oq fon */
   backdrop-filter: blur(20px) saturate(180%); /* Muz simon effekt */
