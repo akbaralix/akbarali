@@ -282,6 +282,7 @@
   top: 0;
   left: 0;
   width: 100%;
+  overflow-y: auto;
   height: 100%;
   background: rgba(0, 0, 0, 0.7);
   display: flex;
@@ -296,11 +297,15 @@
   max-width: 600px;
   width: 100%;
   max-height: 90vh;
-  overflow-y: auto;
+  overflow-y: auto !important;
+  overflow-x: hidden !important;
   position: relative;
   padding: 30px;
   display: flex;
   flex-direction: column;
+  background-color: #020202ad;
+  border-top: 1px solid rgba(177, 173, 173, 0.39);
+  border-radius: 25px;
   gap: 20px;
   transition: transform 0.3s ease;
 }

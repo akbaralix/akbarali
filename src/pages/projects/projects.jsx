@@ -240,7 +240,7 @@ Loyiha foydalanuvchilar faolligini oshirish, auditoriyani kengaytirish va mukofo
             onClick={() => setDetailedProject(null)}
           />
           <div
-            className="project-detail-modal apple-glass"
+            className="project-detail-modal"
             onClick={(e) => e.stopPropagation()}
           >
             <img
