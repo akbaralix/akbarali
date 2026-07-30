@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react"; // 1. useEffect ni qo'shing
 import { Link, NavLink } from "react-router-dom";
 import { CloseButton } from "../../components/Button";
 
@@ -11,9 +11,30 @@ import {
 } from "react-icons/fa";
 
 import "./navbar.css";
+import logo from "/src/assets/logo.png";
 
 function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
+
+  useEffect(() => {
+    if (menuOpen) {
+      // Sahifa skroll bo'lgan masofasini saqlab qolamiz
+      const scrollY = window.scrollY;
+      document.body.style.position = "fixed";
+      document.body.style.top = `-${scrollY}px`;
+      document.body.style.width = "100%";
+    } else {
+      // Menyu yopilganda scroll joyini qaytaramiz
+      const scrollY = document.body.style.top;
+      document.body.style.position = "";
+      document.body.style.top = "";
+      document.body.style.width = "";
+      if (scrollY) {
+        window.scrollTo(0, parseInt(scrollY || "0") * -1);
+      }
+    }
+  }, [menuOpen]);
+
   const myLink = [
     {
       name: "Telegram",
@@ -33,12 +54,13 @@ function Navbar() {
       icon: <FaLinkedin className="icon-linkedin" />,
     },
   ];
+
   return (
     <>
       <div className="navbar">
         <div className="logo">
           <Link to="/" onClick={() => setMenuOpen(false)}>
-            Akbarali
+            <img src={logo} alt="Logo" />
           </Link>
         </div>
 
@@ -67,9 +89,7 @@ function Navbar() {
               <NavLink to="/loyihalar">Loyihalar</NavLink>
             </li>
             <li>
-              <NavLink to="/blog" onClick={() => setMenuOpen(false)}>
-                Blog
-              </NavLink>
+              <NavLink to="/blog">Blog</NavLink>
             </li>
             <li>
               <NavLink to="/aloqa">Aloqa</NavLink>
@@ -82,11 +102,14 @@ function Navbar() {
         <div className="mn-header">
           <div className="logo">
             <Link to="/" onClick={() => setMenuOpen(false)}>
-              Akbarali
+              <img src={logo} alt="Logo" />
             </Link>
           </div>
 
-          <CloseButton className="close-btn" onClick={() => setMenuOpen(false)} />
+          <CloseButton
+            className="close-btn"
+            onClick={() => setMenuOpen(false)}
+          />
         </div>
 
         <nav>
@@ -107,13 +130,13 @@ function Navbar() {
               </NavLink>
             </li>
             <li>
-              <NavLink to="/aloqa" onClick={() => setMenuOpen(false)}>
-                Aloqa
+              <NavLink to="/blog" onClick={() => setMenuOpen(false)}>
+                Blog
               </NavLink>
             </li>
             <li>
-              <NavLink to="/blog" onClick={() => setMenuOpen(false)}>
-                Blog
+              <NavLink to="/aloqa" onClick={() => setMenuOpen(false)}>
+                Aloqa
               </NavLink>
             </li>
           </ul>

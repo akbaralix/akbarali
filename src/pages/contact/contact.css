@@ -129,6 +129,7 @@ a.contact-card:hover {
   padding: 14px 18px;
   color: #ffffff;
   font-family: inherit;
+  resize: none;
   font-size: 0.95rem;
   transition: 0.2s;
 }
@@ -255,6 +256,8 @@ a.contact-card:hover {
 @media (max-width: 900px) {
   .contact-main-title {
     font-size: 2.2rem;
+    font-weight: 500;
+    line-height: 35px;
   }
   .contact-grid {
     grid-template-columns: 1fr;
@@ -263,9 +266,8 @@ a.contact-card:hover {
   .contact-form-wrapper {
     padding: 25px;
   }
-}
-@media (max-width: 900px) {
-  .contact-main-title {
-    font-weight: 500;
+
+  .card-text h4 {
+    font-weight: 400;
   }
 }

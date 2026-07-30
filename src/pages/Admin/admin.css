@@ -143,7 +143,20 @@ textarea:focus {
     "Helvetica Neue",
     sans-serif;
 }
-
+.admin-post-date {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 14px;
+}
+.admin-post-date button {
+  display: flex;
+  justify-content: center;
+  box-shadow: var(--glass-shadow);
+  border: none;
+  background-color: #111010;
+  color: rgb(236, 27, 27);
+}
 .admin-form button {
   background: rgb(74, 54, 202);
   color: white;

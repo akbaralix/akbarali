@@ -1,6 +1,7 @@
 .home-container {
-  height: 76vh;
+  min-height: 76vh;
 }
+
 .home-content {
   display: flex;
   align-items: center;
@@ -59,7 +60,7 @@
   height: 45px;
   border-radius: 50%;
   background: rgba(171, 160, 160, 0.1);
-  box-shadow: var(--glass-shadow);
+  box-shadow: var(--glass-shadow, 0 8px 32px 0 rgba(0, 0, 0, 0.37));
   font-size: 1.7rem;
   color: #2e2ed4;
   transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
@@ -75,7 +76,7 @@
   padding: 4px 10px;
   border-radius: 6px;
   white-space: nowrap;
-  box-shadow: var(--glass-shadow);
+  box-shadow: var(--glass-shadow, 0 4px 12px rgba(0, 0, 0, 0.15));
 
   opacity: 0;
   visibility: hidden;
@@ -83,6 +84,7 @@
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   pointer-events: none;
 }
+
 .tooltip-text::before {
   content: "";
   position: absolute;
@@ -108,18 +110,16 @@
 .home-social-link a:hover .icon-tg {
   color: #0088cc;
 }
-
 .home-social-link a:hover .icon-insta {
   color: #e1306c;
 }
-
 .home-social-link a:hover .icon-github {
   color: #333;
 }
-
 .home-social-link a:hover .icon-linkedin {
   color: #0077b5;
 }
+
 .skills-container {
   font-family: "Poppins", sans-serif;
 }
@@ -152,7 +152,6 @@
   letter-spacing: 0.5px;
 }
 
-/* --- Kengaytirilgan Grid Tizimi --- */
 .skill-card-grid,
 .database-card-grid {
   display: grid;
@@ -163,7 +162,7 @@
 .enhanced-skill-card,
 .enhanced-db-card {
   background: rgba(255, 255, 255, 0.02);
-  box-shadow: var(--glass-shadow);
+  box-shadow: var(--glass-shadow, 0 8px 32px 0 rgba(0, 0, 0, 0.37));
   padding: 20px;
   border-radius: 30px;
   backdrop-filter: blur(8px);
@@ -246,21 +245,41 @@
   line-height: 1.5;
 }
 
+@keyframes dropBounce {
+  0% {
+    transform: translateY(-150px);
+    opacity: 0;
+  }
+  60% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+  75% {
+    transform: translateY(-8px);
+  }
+  95% {
+    transform: translateY(-1px);
+  }
+  100% {
+    transform: translateY(0);
+  }
+}
+
 @media (max-width: 768px) {
   .home-container {
-    height: 88vh;
+    min-height: auto;
   }
   .home-content {
     flex-direction: column-reverse;
     text-align: center;
-    margin: -15px;
-    padding: 24px;
+    margin: 0 auto;
+    padding: 24px 0;
     gap: 24px;
   }
 
   .home-text h2 {
     font-size: 2.2rem;
-    line-height: 2.4rem;
+    line-height: 1.2;
     font-weight: 500;
   }
 
@@ -272,41 +291,26 @@
   .home-img img {
     max-width: 80%;
   }
+
   .home-social {
     justify-content: center;
   }
+
   .skills-header h2 {
     font-size: 1.8rem;
   }
+
   .skills-intro-text {
     font-size: 0.95rem;
   }
+
   .skill-card-grid,
   .database-card-grid {
     grid-template-columns: 1fr;
   }
+
   .sub-section-title {
     text-align: center;
     font-size: 1.4rem;
-  }
-  @keyframes dropBounce {
-    0% {
-      transform: translateY(-150px);
-      opacity: 0;
-    }
-    60% {
-      transform: translateY(0);
-      opacity: 1;
-    }
-    75% {
-      transform: translateY(-8px);
-    }
-
-    95% {
-      transform: translateY(-1px);
-    }
-    100% {
-      transform: translateY(0);
-    }
   }
 }

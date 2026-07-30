@@ -238,7 +238,7 @@ function Admin() {
           {posts &&
             posts.map((post) => (
               <div key={post.id}>
-                <div className="post-date">
+                <div className="admin-post-date">
                   <p>{new Date(post.data).toLocaleDateString("uz-UZ")}</p>
                   <button onClick={() => handleDeletePost(post._id)}>
                     <FaRegTrashCan />
