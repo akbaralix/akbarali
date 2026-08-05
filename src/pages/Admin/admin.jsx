@@ -1,17 +1,20 @@
-import { useState } from "react";
-import { Link } from "react-router-dom"; // 👈 LINK IMPORT QILINDI
+import { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import ReactQuill from "react-quill-new";
 import { usePosts } from "../blog/usePosts";
 import { FaRegTrashCan } from "react-icons/fa6";
+import { FiLogOut } from "react-icons/fi";
 
 import "./admin.css";
 import "react-quill-new/dist/quill.snow.css";
 
 function Admin() {
   const [password, setPassword] = useState("");
+  const [token, setToken] = useState(() => sessionStorage.getItem("admin_token") || "");
   const [isAuthorized, setIsAuthorized] = useState(false);
-  const [loginError, setLoginError] = useState(""); // 👈 Ismi o'zgartirildi (chalkashmaslik uchun)
+  const [loginError, setLoginError] = useState("");
   const [loading, setLoading] = useState(false);
+  const [verifying, setVerifying] = useState(true);
 
   const [yangiMaqola, setYangiMaqola] = useState({
     sarlavha: "",
@@ -20,6 +23,45 @@ function Admin() {
     data: "",
     sluge: "",
   });
+
+  const { posts, isLoading, error: postsError, refetch } = usePosts();
+  const api = import.meta.env.VITE_API_URL;
+
+  // 🔄 Token haqiqiyligini tekshirish
+  useEffect(() => {
+    const verifyToken = async () => {
+      const savedToken = sessionStorage.getItem("admin_token");
+      if (!savedToken) {
+        setVerifying(false);
+        setIsAuthorized(false);
+        return;
+      }
+
+      try {
+        const response = await fetch(`${api}/api/admin/verify`, {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${savedToken}`,
+          },
+        });
+
+        if (response.ok) {
+          setIsAuthorized(true);
+          setToken(savedToken);
+        } else {
+          sessionStorage.removeItem("admin_token");
+          setToken("");
+          setIsAuthorized(false);
+        }
+      } catch (err) {
+        console.error("Token tekshirishda xatolik:", err);
+      } finally {
+        setVerifying(false);
+      }
+    };
+
+    verifyToken();
+  }, [api]);
 
   const modules = {
     toolbar: [
@@ -30,11 +72,47 @@ function Admin() {
     ],
   };
 
-  // postsError deb qayta nomlab oldik, loginError bilan urishib ketmaydi
-  const { posts, isLoading, error: postsError } = usePosts();
+  // 🔐 BACKEND GA HAVSIZ LOGIN SO'ROVI YUBORISH
+  const handleLoginSubmit = async (e) => {
+    e.preventDefault();
+    setLoginError("");
+    setLoading(true);
 
-  const api = import.meta.env.VITE_API_URL;
+    try {
+      const response = await fetch(`${api}/api/admin/login`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ password }),
+      });
 
+      const data = await response.json();
+
+      if (response.ok && data.success && data.token) {
+        sessionStorage.setItem("admin_token", data.token);
+        setToken(data.token);
+        setIsAuthorized(true);
+        setPassword("");
+        setLoginError("");
+      } else {
+        setLoginError(data.message || "Xato parol! ❌");
+      }
+    } catch (err) {
+      console.error("Login so'rovida xatolik:", err);
+      setLoginError("Server bilan ulanishda xatolik yuz berdi! ❌");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleLogout = () => {
+    sessionStorage.removeItem("admin_token");
+    setToken("");
+    setIsAuthorized(false);
+  };
+
+  // 📝 MAQOLA QO'SHISH (JWT TOKEN BILAN HAVSIZ SO'ROV)
   const handleSubmit = async (event) => {
     event.preventDefault();
     setLoading(true);
@@ -62,9 +140,12 @@ function Admin() {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify(yuboriladiganMaqola),
       });
+
+      const resData = await response.json();
 
       if (response.ok) {
         alert("Maqola muvaffaqiyatli saqlandi! 🎉");
@@ -75,9 +156,12 @@ function Admin() {
           data: "",
           sluge: "",
         });
+        if (refetch) refetch();
+      } else if (response.status === 401) {
+        alert("Seans muddati tugadi! Qayta kirishingiz kerak. 🔐");
+        handleLogout();
       } else {
-        const errorData = await response.json();
-        alert(`Xatolik yuz berdi: ${errorData.message || "Xatolik"}`);
+        alert(`Xatolik yuz berdi: ${resData.message || "Xatolik"}`);
       }
     } catch (err) {
       console.error("Ulanishda xatolik:", err);
@@ -87,40 +171,54 @@ function Admin() {
     }
   };
 
-  const handleLoginSubmit = (e) => {
-    e.preventDefault();
-    const securePassword = import.meta.env.VITE_ADMIN_KEY;
-
-    if (password === securePassword) {
-      setIsAuthorized(true);
-      setLoginError("");
-    } else {
-      setLoginError("Xato parol kiritildi! ❌");
-    }
-  };
+  // 🗑️ MAQOLANI O'CHIRISH (JWT TOKEN BILAN HAVSIZ SO'ROV)
   const handleDeletePost = async (id) => {
+    if (!window.confirm("Rostdan ham ushbu maqolani o'chirmoqchimisiz?"))
+      return;
+
     try {
       const response = await fetch(`${api}/api/post/${id}`, {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
         },
       });
 
-      // 🟢 Agar server 404 yoki 500 qaytarsa, shu yerda ushlaymiz:
+      const resData = await response.json();
+
+      if (response.status === 401) {
+        alert("Seans muddati tugadi! Qayta kirishingiz kerak. 🔐");
+        handleLogout();
+        return;
+      }
+
       if (!response.ok) {
-        alert("Server bu manzilni topa olmadi (404) yoki boshqa xato bo'ldi.");
+        alert(resData.message || "O'chirishda xatolik yuz berdi.");
         return;
       }
 
       alert("Muvaffaqiyatli o'chirildi!");
-      window.location.reload(); // sahifani yangilash
+      if (refetch) {
+        refetch();
+      } else {
+        window.location.reload();
+      }
     } catch (err) {
-      console.log(err);
-      alert("Serverga ulanishda xatolik yuz berdi");
+      console.error(err);
+      alert("Serverga ulanishda xatolik yuz berdi ❌");
     }
   };
 
+  if (verifying) {
+    return (
+      <div className="admin-login-wrapper">
+        <p style={{ textAlign: "center", color: "#fff" }}>Avtorizatsiya tekshirilmoqda... ⏳</p>
+      </div>
+    );
+  }
+
+  // 1. Avtorizatsiyadan o'tmagan bo'lsa Login shakli
   if (!isAuthorized) {
     return (
       <div className="admin-login-wrapper">
@@ -133,16 +231,19 @@ function Admin() {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
+              disabled={loading}
             />
           </div>
           {loginError && <p className="error-message">{loginError}</p>}
-          <button type="submit">Tasdiqlash</button>
+          <button type="submit" disabled={loading}>
+            {loading ? "Tekshirilmoqda..." : "Tasdiqlash"}
+          </button>
         </form>
       </div>
     );
   }
 
-  // 2. Agar parol to'g'ri bo'lsa va postlar yuklanayotgan bo'lsa, skeleton ko'rsatiladi
+  // 2. Postlar yuklanayotgan bo'lsa Skeleton
   if (isLoading) {
     return (
       <div className="blog-container">
@@ -171,18 +272,37 @@ function Admin() {
     );
   }
 
-  // 3. Agar bazadan postlarni olishda xatolik bo'lsa
-  if (postsError)
+  // 3. Postlarni yuklashda xatolik bo'lsa
+  if (postsError) {
     return (
       <div className="error-message">
         Postlarni yuklashda xatolik yuz berdi...
       </div>
     );
+  }
 
-  // 4. Parol to'g'ri va yuklanish tugagan bo'lsa, asosiy admin panel ochiladi
+  // 4. Asosiy Admin Interfeysi
   return (
     <div className="admin">
-      <div className="statistik-container"></div>
+      <div className="admin-header-actions" style={{ display: "flex", justifyContent: "flex-end", padding: "10px 20px" }}>
+        <button
+          onClick={handleLogout}
+          style={{
+            display: "flex",
+            alignItems: "center",
+            gap: "8px",
+            background: "#ff4a4a",
+            color: "#fff",
+            border: "none",
+            padding: "8px 16px",
+            borderRadius: "10px",
+            cursor: "pointer",
+            fontWeight: "600",
+          }}
+        >
+          <FiLogOut /> Chiqish
+        </button>
+      </div>
       <div className="admin-container">
         <h3>Yangi maqola yozish</h3>
 
@@ -192,7 +312,7 @@ function Admin() {
             <input
               type="text"
               required
-              placeholder="Maqola uchun sozboshi"
+              placeholder="Maqola uchun sarlavha"
               value={yangiMaqola.sarlavha}
               onChange={(e) =>
                 setYangiMaqola({ ...yangiMaqola, sarlavha: e.target.value })
@@ -201,11 +321,11 @@ function Admin() {
           </div>
 
           <div className="form-group">
-            <label>Maqola uchun rasm URL li</label>
+            <label>Maqola uchun rasm URL-manzili</label>
             <input
               type="text"
               required
-              placeholder="Maqola rasmi"
+              placeholder="https://example.com/image.jpg"
               value={yangiMaqola.rasm}
               onChange={(e) =>
                 setYangiMaqola({ ...yangiMaqola, rasm: e.target.value })
@@ -237,7 +357,7 @@ function Admin() {
         <div className="blog-grid">
           {posts &&
             posts.map((post) => (
-              <div key={post.id}>
+              <div key={post._id || post.id}>
                 <div className="admin-post-date">
                   <p>{new Date(post.data).toLocaleDateString("uz-UZ")}</p>
                   <button onClick={() => handleDeletePost(post._id)}>

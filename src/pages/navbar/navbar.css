@@ -169,7 +169,7 @@
 .mn-nav ul li a {
   color: rgba(255, 255, 255, 0.85);
   font-size: 2.2rem;
-  font-weight: 700;
+  font-weight: 400;
   text-decoration: none;
   letter-spacing: -0.03em;
   display: inline-block;
@@ -182,10 +182,6 @@
 
 .mn-nav.open ul li a {
   transform: translateY(0);
-}
-
-.mn-nav ul li a:hover {
-  color: #3636c6;
 }
 
 .social-links {
@@ -206,7 +202,7 @@
   transform: translateX(-50%) translateY(0);
 }
 .mn-nav ul li a.active {
-  color: #6060e6;
+  color: var(--primary-color);
 }
 
 .social-links a {
@@ -219,7 +215,7 @@
   border-radius: 50%;
   box-shadow: var(--glass-shadow);
   font-size: 1.93rem;
-  color: #2e2ed4;
+  color: var(--primary-color);
   text-decoration: none;
   transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
   background: rgb(253, 245, 245);

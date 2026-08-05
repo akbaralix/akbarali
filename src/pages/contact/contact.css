@@ -10,7 +10,7 @@
 .contact-main-title {
   font-size: 2.8rem;
   font-weight: 700;
-  color: #3636c6;
+  color: var(--primary-color);
   margin-bottom: 15px;
   display: flex;
   align-items: center;
@@ -85,7 +85,7 @@ a.contact-card:hover {
 
 .card-text p {
   font-size: 1rem;
-  color: #3636c6;
+  color: var(--primary-color);
   font-weight: 600;
   margin: 0 0 4px 0;
 }
@@ -137,16 +137,16 @@ a.contact-card:hover {
 .form-group input:focus,
 .form-group textarea:focus {
   outline: none;
-  border-color: #3636c6;
-  background: rgba(54, 54, 198, 0.02);
-  box-shadow: 0 0 15px rgba(54, 54, 198, 0.15);
+  border-color: var(--primary-color);
+  background: rgba(142, 88, 223, 0.02);
+  box-shadow: 0 0 15px rgba(142, 88, 223, 0.15);
 }
 
 .contact-submit-btn {
-  background: #3636c6;
+  background: var(--primary-color);
   color: #ffffff;
   border: none;
-  border-radius: 14px;
+  border-radius: 30px;
   padding: 15px;
   font-size: 1.1rem;
   font-family: inherit;
@@ -163,7 +163,8 @@ a.contact-card:hover {
 }
 
 .contact-submit-btn:hover {
-  background: #2b2bb0;
+  background: var(--primary-color);
+  opacity: 0.9;
   transform: translateY(-2px);
 }
 
@@ -171,13 +172,11 @@ a.contact-card:hover {
   transform: translateY(0);
 }
 
-/* Tugma ichidagi emoji stili joyiga qaytdi */
 .btn-emoji {
   display: flex;
   align-items: center;
 }
 
-/* Modal oyna foni (Overlay) o'z stillarini qaytarib oldi */
 .contact-message-overlay {
   position: fixed;
   top: 0;

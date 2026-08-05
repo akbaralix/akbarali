@@ -13,9 +13,9 @@ import {
 } from "react-icons/fa";
 import { GrMysql } from "react-icons/gr";
 import { BiLogoPostgresql } from "react-icons/bi";
-
 import { SiVite, SiMongodb } from "react-icons/si";
 import SEO from "../../components/SEO";
+import SpotlightCard from "../../components/SpotlightCard";
 import "./home.css";
 
 function Home() {
@@ -52,6 +52,26 @@ function Home() {
     { id: 1, name: "MySQL", icon: <GrMysql />, color: "#00758F" },
     { id: 2, name: "PostgreSQL", icon: <BiLogoPostgresql />, color: "#336791" },
     { id: 3, name: "MongoDB", icon: <SiMongodb />, color: "#00ED64" },
+  ];
+  const myPrinciples = [
+    {
+      id: 1,
+      title: "Toza va Strukturaviy Kod",
+      description:
+        "Kelajakda osongina kengayadigan, tushunarli va Clean Code qoidalariga mos kod yozaman.",
+    },
+    {
+      id: 2,
+      title: "Xavfsizlik va Anti-Spam",
+      description:
+        "Ayniqsa Telegram botlarda tizimni turli xil spam-hujumlardan va crash holatlaridan himoya qila olaman.",
+    },
+    {
+      id: 3,
+      title: "UI/UX va Tezkorlik",
+      description:
+        "Vite va React yordamida mobil qurilmalarda ham, kompyuterda ham soniyalarda ochiladigan interfeyslar quraman.",
+    },
   ];
 
   return (
@@ -166,30 +186,15 @@ function Home() {
         <div className="principles-block">
           <h3 className="sub-section-title">Men qanday kod yozaman?</h3>
           <div className="principles-grid">
-            <div className="principle-item">
-              <div className="p-num">01</div>
-              <h5>Toza va Strukturaviy Kod</h5>
-              <p>
-                Kelajakda osongina kengayadigan, tushunarli va Clean Code
-                qoidalariga mos kod yozaman.
-              </p>
-            </div>
-            <div className="principle-item">
-              <div className="p-num">02</div>
-              <h5>Xavfsizlik va Anti-Spam</h5>
-              <p>
-                Ayniqsa Telegram botlarda tizimni turli xil spam-hujumlardan va
-                crash holatlaridan himoya qila olaman.
-              </p>
-            </div>
-            <div className="principle-item">
-              <div className="p-num">03</div>
-              <h5>UI/UX va Tezkorlik</h5>
-              <p>
-                Vite va React yordamida mobil qurilmalarda ham, kompyuterda ham
-                soniyalarda ochiladigan interfeyslar quraman.
-              </p>
-            </div>
+            {myPrinciples.map((principle) => (
+              <SpotlightCard>
+                <div className="principle-item">
+                  <div className="p-num">{principle.id}</div>
+                  <h5>{principle.title}</h5>
+                  <p>{principle.description}</p>
+                </div>
+              </SpotlightCard>
+            ))}
           </div>
         </div>
       </div>

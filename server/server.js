@@ -3,40 +3,178 @@ import dotenv from "dotenv";
 import connectDB from "./DB/db.js";
 import Post from "./Post.js";
 import cors from "cors";
-
 import path from "path";
 import { fileURLToPath } from "url";
+import jwt from "jsonwebtoken";
+import rateLimit from "express-rate-limit";
+import helmet from "helmet";
+import sanitizeHtml from "sanitize-html";
+import mongoose from "mongoose";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 dotenv.config({ path: path.resolve(__dirname, ".env") });
-const app = express();
-app.use(cors());
-app.use(express.json());
 
+const app = express();
+
+// 1. HTTP Xavfsizlik sarlavhalari (Helmet)
+app.use(helmet());
+
+// 2. CORS sozlamalari
+app.use(cors());
+
+// 3. JSON body parser
+app.use(express.json({ limit: "10mb" }));
+
+// MongoDB ga ulanish
 connectDB();
 
-app.post("/api/post", async (req, res) => {
+// 4. Rate Limiter (Hujumlardan himoya)
+const loginLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 daqiqa
+  max: 5, // 15 daqiqada maksimal 5 marta kirishga urinish
+  message: {
+    success: false,
+    message: "Juda ko'p xato urinishlar! Iltimos, 15 daqiqadan so'ng qayta urinib ko'ring. ❌",
+  },
+  standardHeaders: true,
+  legacyHeaders: false,
+});
+
+const writeLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 30, // 15 daqiqada maksimal 30 ta post yaratish/o'chirish
+  message: {
+    success: false,
+    message: "Juda ko me'yordan ortiq so'rov yuborildi. Iltimos bir oz kuting. ❌",
+  },
+});
+
+const apiLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 200,
+});
+
+app.use("/api/", apiLimiter);
+
+// 5. JWT Authentication Middleware (Backend Avtorizatsiyasini tekshirish)
+const authMiddleware = (req, res, next) => {
+  const authHeader = req.headers.authorization;
+  if (!authHeader || !authHeader.startsWith("Bearer ")) {
+    return res.status(401).json({
+      success: false,
+      message: "Ruxsat etilmadi! Avtorizatsiya belgisi (token) yo'q. ❌",
+    });
+  }
+
+  const token = authHeader.split(" ")[1];
+  try {
+    const decoded = jwt.verify(
+      token,
+      process.env.JWT_SECRET || "fallback_secret_key_2026_safe"
+    );
+    req.admin = decoded;
+    next();
+  } catch (err) {
+    return res.status(401).json({
+      success: false,
+      message: "Yaroqsiz yoki muddati o'tgan token! Qaytadan tizimga kiring. ❌",
+    });
+  }
+};
+
+// 🔐 6. ADMIN LOGIN ENDPOINT (Xavfsiz Kirish)
+app.post("/api/admin/login", loginLimiter, async (req, res) => {
+  try {
+    const { password } = req.body;
+    const adminPassword = process.env.ADMIN_PASSWORD || "5879";
+
+    if (!password || typeof password !== "string") {
+      return res.status(400).json({
+        success: false,
+        message: "Parol kiritilishi shart! ❌",
+      });
+    }
+
+    if (password !== adminPassword) {
+      return res.status(401).json({
+        success: false,
+        message: "Xato parol! ❌",
+      });
+    }
+
+    // Parol to'g'ri bo'lsa, JWT token yaratamiz (24 soat amal qiladi)
+    const token = jwt.sign(
+      { role: "admin" },
+      process.env.JWT_SECRET || "fallback_secret_key_2026_safe",
+      { expiresIn: "24h" }
+    );
+
+    res.status(200).json({
+      success: true,
+      message: "Xush kelibsiz! 🔓",
+      token,
+    });
+  } catch (error) {
+    console.error("Login xatoligi:", error);
+    res.status(500).json({
+      success: false,
+      message: "Serverda xatolik yuz berdi! ❌",
+    });
+  }
+});
+
+// 🔍 7. TOKEN VERIFY ENDPOINT (Token haqiqiyligini tekshirish)
+app.get("/api/admin/verify", authMiddleware, (req, res) => {
+  res.status(200).json({ success: true, valid: true });
+});
+
+// 📝 8. YANGI MAQOLA YARATISH (CREATE) - FAKAT HAVSIZ ADMIN UCHUN
+app.post("/api/post", authMiddleware, writeLimiter, async (req, res) => {
   try {
     const { sarlavha, rasm, matn, data, sluge } = req.body;
 
-    // Matndagi barcha &nbsp; belgilarini oddiy bo'shliqqa o'zgartiramiz
-    const tozalanganMatn = matn ? matn.replace(/&nbsp;/g, " ") : "";
+    // Ma'lumotlarni validatsiya qilish
+    if (!sarlavha || typeof sarlavha !== "string" || !sarlavha.trim()) {
+      return res.status(400).json({ success: false, message: "Sarlavha kiritilishi shart!" });
+    }
+
+    if (!rasm || typeof rasm !== "string" || !rasm.trim()) {
+      return res.status(400).json({ success: false, message: "Rasm URL-manzili kiritilishi shart!" });
+    }
+
+    // XSS Hujumlaridan himoyalash uchun HTML tozalash
+    const tozalanganMatn = sanitizeHtml(matn ? matn.replace(/&nbsp;/g, " ") : "", {
+      allowedTags: sanitizeHtml.defaults.allowedTags.concat([
+        "img", "iframe", "h1", "h2", "h3", "h4", "u", "span", "blockquote"
+      ]),
+      allowedAttributes: {
+        ...sanitizeHtml.defaults.allowedAttributes,
+        img: ["src", "alt", "title", "width", "height"],
+        iframe: ["src", "width", "height", "frameborder", "allowfullscreen"],
+        span: ["style", "class"],
+        a: ["href", "name", "target", "rel"]
+      },
+      allowedSchemesByTag: {
+        img: ["data", "http", "https"],
+        iframe: ["http", "https"]
+      }
+    });
+
+    const cleanSarlavha = sanitizeHtml(sarlavha, { allowedTags: [], allowedAttributes: {} });
 
     // Yangi post ob'ektini yaratamiz
     const newPost = new Post({
-      sarlavha,
-      rasm,
+      sarlavha: cleanSarlavha,
+      rasm: rasm.trim(),
       matn: tozalanganMatn,
-      data,
-      sluge,
+      data: data || new Date().toISOString(),
+      sluge: sluge || Math.random().toString(36).substring(2, 9),
     });
 
-    // Bazaga saqlaymiz
     const savedPost = await newPost.save();
 
-    // Muvaffaqiyatli javob qaytaramiz
     res.status(201).json({
       success: true,
       message: "Maqola muvaffaqiyatli saqlandi! 🎉",
@@ -52,11 +190,9 @@ app.post("/api/post", async (req, res) => {
   }
 });
 
-// 📖 2. BARCHA MAQOLALARNI BAZADAN OLISH (READ)
-
+// 📖 9. BARCHA MAQOLALARNI OLISH (PUBLIC READ)
 app.get("/api/post", async (req, res) => {
   try {
-    // Bazadagi barcha postlarni eng yangisi birinchi chiqadigan qilib olamiz
     const posts = await Post.find().sort({ data: -1 });
 
     res.status(200).json({
@@ -74,32 +210,40 @@ app.get("/api/post", async (req, res) => {
   }
 });
 
+// 👁️ 10. KO'RILDI SONINI OSHIRISH (PUBLIC VIEW)
 app.post("/api/post/view/:id", async (req, res) => {
   try {
     const postId = req.params.id;
 
+    if (!mongoose.Types.ObjectId.isValid(postId)) {
+      return res.status(400).json({ message: "Yaroqsiz post ID ❌" });
+    }
+
     const updatedPost = await Post.findByIdAndUpdate(
       postId,
       { $inc: { korildi: 1 } },
-      { returnDocument: "after" },
+      { returnDocument: "after" }
     );
 
     if (!updatedPost) {
       return res.status(404).json({ message: "Post topilmadi" });
     }
 
-    // 2. Frontendga hammasi yaxshi bo'lganini bildiramiz
-    res.status(200).json({ success: true, views: updatedPost.views });
+    res.status(200).json({ success: true, views: updatedPost.korildi });
   } catch (err) {
-    console.log(err);
+    console.error(err);
     res.status(500).json({ message: "Serverda xatolik yuz berdi" });
   }
 });
 
-// 🟢 TO'G'RI BACKEND KODI:
-app.delete("/api/post/:id", async (req, res) => {
+// 🗑️ 11. MAQOLANI O'CHIRISH (DELETE) - FAQAT HAVSIZ ADMIN UCHUN
+app.delete("/api/post/:id", authMiddleware, writeLimiter, async (req, res) => {
   try {
     const postId = req.params.id;
+
+    if (!mongoose.Types.ObjectId.isValid(postId)) {
+      return res.status(400).json({ message: "Yaroqsiz ID formati! ❌" });
+    }
 
     const ocharotganPost = await Post.findByIdAndDelete(postId);
 
@@ -107,8 +251,9 @@ app.delete("/api/post/:id", async (req, res) => {
       return res.status(404).json({ message: "Maqola topilmadi! ❌" });
     }
 
-    res.status(200).json({ message: "Maqola o'chirildi! 🎉" });
+    res.status(200).json({ success: true, message: "Maqola muvaffaqiyatli o'chirildi! 🎉" });
   } catch (err) {
+    console.error("O'chirishda xatolik:", err);
     res.status(500).json({ error: err.message });
   }
 });
@@ -116,5 +261,5 @@ app.delete("/api/post/:id", async (req, res) => {
 // 🖥️ Serverni ishga tushirish
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
-  console.log(`Server ${PORT}-portda ishladi... 🚀`);
+  console.log(`Server ${PORT}-portda xavfsiz rejimda ishladi... 🚀`);
 });
