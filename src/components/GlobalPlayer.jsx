@@ -29,7 +29,7 @@ const GlobalPlayer = () => {
         className="play-btn"
         onClick={() => playTrack(currentTrack, trackTitle)}
       >
-        {isPlaying ? <IoPlay /> : <IoPause />}
+        {isPlaying ? <IoPause /> : <IoPlay />}
       </button>
 
       <div className="track-details">

@@ -10,7 +10,9 @@ import "react-quill-new/dist/quill.snow.css";
 
 function Admin() {
   const [password, setPassword] = useState("");
-  const [token, setToken] = useState(() => sessionStorage.getItem("admin_token") || "");
+  const [token, setToken] = useState(
+    () => sessionStorage.getItem("admin_token") || "",
+  );
   const [isAuthorized, setIsAuthorized] = useState(false);
   const [loginError, setLoginError] = useState("");
   const [loading, setLoading] = useState(false);
@@ -213,7 +215,9 @@ function Admin() {
   if (verifying) {
     return (
       <div className="admin-login-wrapper">
-        <p style={{ textAlign: "center", color: "#fff" }}>Avtorizatsiya tekshirilmoqda... ⏳</p>
+        <p style={{ textAlign: "center", color: "#fff" }}>
+          Avtorizatsiya tekshirilmoqda... ⏳
+        </p>
       </div>
     );
   }
@@ -222,6 +226,9 @@ function Admin() {
   if (!isAuthorized) {
     return (
       <div className="admin-login-wrapper">
+        <div className="ad-sticker">
+          <img src="/src/assets/tenor.gif" alt="" />
+        </div>
         <form onSubmit={handleLoginSubmit} className="admin-login">
           <h3>Admin panelga kirish 🔐</h3>
           <div className="form-group">
@@ -284,7 +291,14 @@ function Admin() {
   // 4. Asosiy Admin Interfeysi
   return (
     <div className="admin">
-      <div className="admin-header-actions" style={{ display: "flex", justifyContent: "flex-end", padding: "10px 20px" }}>
+      <div
+        className="admin-header-actions"
+        style={{
+          display: "flex",
+          justifyContent: "flex-end",
+          padding: "10px 20px",
+        }}
+      >
         <button
           onClick={handleLogout}
           style={{

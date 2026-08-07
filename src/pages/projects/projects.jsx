@@ -1,117 +1,102 @@
-import React, { useState } from "react";
-import { FaGithub, FaTelegram, FaGlobe, FaBookOpen } from "react-icons/fa";
+import React, { useState, useMemo, useCallback } from "react";
+import { FaGithub, FaTelegram, FaGlobe } from "react-icons/fa";
 import { FiExternalLink } from "react-icons/fi";
 import { MdOutlineGridView } from "react-icons/md";
+
 import { CloseButton } from "../../components/Button";
+import SEO from "../../components/SEO";
+import ImageZoom from "../../components/ImageZoom";
 
 import taxiImg from "../../assets/taxi.jpg";
 import profilmImg from "../../assets/profilm.png";
 import slydAiImg from "../../assets/SlydAI.jpg";
 import akaStarImg from "../../assets/AkaStar.jpg";
-import SEO from "../../components/SEO";
-import ImageZoom from "../../components/ImageZoom";
 
 import "./projects.css";
 
+// 📦 Static Data (Komponent tashqarisida e'lon qilingan)
+const PROJECTS_DATA = [
+  {
+    id: 1,
+    img: taxiImg,
+    title: "Telegramda taksi bot",
+    projectUrl: "https://t.me/OzimizniTaksiBot",
+    projectGithubUrl: "https://github.com/akbaral1/OzimizniTaksiBot",
+    type: "Telegram Bot",
+    desc: "Ko'pincha qishloq joylarda taksilarga qo'ngiroq qilib manzilni tushuntirish qiyin bo'lar edi. Men bunga yechim sifatida Telegramda Taxi botini yaratdim. Bot foydalanuvchi joylashuvini olib, 5km radiusdagi eng yaqin haydovchiga buyurtmani yuboradi.",
+    emoji: "https://fonts.gstatic.com/s/e/notoemoji/latest/1f695/512.webp",
+    emojiAlt: "🚖",
+    tech: ["Node.js", "Telegram Bot API", "MongoDB"],
+  },
+  {
+    id: 2,
+    img: profilmImg,
+    title: "Profilm",
+    projectUrl: "https://profilimuz.web.app",
+    projectGithubUrl: "https://github.com/akbaralix/profilm",
+    type: "Frontend Veb Ilova",
+    desc: "Linklaringizni bir sahifada boshqarish uchun mo'ljallangan web sayt. Instagram, Telegram, X, YouTube va boshqa ijtiomiy tarmoqlardagi sahifalaringiz havolasini bitta joyga jamlaydi hamda tashriflar va bosishlar statistikasini ko'rsatadi.",
+    emoji: "https://fonts.gstatic.com/s/e/notoemoji/latest/1f3c6/512.webp",
+    emojiAlt: "🏆",
+    tech: ["React", "Vite", "JavaScript", "HTML5", "MongoDB"],
+  },
+  {
+    id: 3,
+    img: slydAiImg,
+    title: "Slayd AI Bot",
+    projectUrl: "https://t.me/SlydAiBot",
+    projectGithubUrl: "https://github.com/akbaralix/SlydAi",
+    type: "Telegram Bot",
+    desc: "Sun'iy intellekt texnologiyalaridan foydalangan holda avtomatik taqdimotlar va slaydlar yaratishga mo'ljallangan innovatsion Telegram bot.",
+    emoji: "https://fonts.gstatic.com/s/e/notoemoji/latest/1f4da/512.webp",
+    emojiAlt: "📚",
+    tech: ["Node.js", "Telegram Bot API", "GROQ AI API", "MongoDB"],
+  },
+  {
+    id: 4,
+    img: akaStarImg,
+    title: "Stars Referal Bot",
+    projectUrl: "https://t.me/AkaStarBot",
+    projectGithubUrl: "https://github.com/akbaralix/AkaStar",
+    type: "Telegram Bot",
+    desc: "Telegram Stars ekotizimi uchun ishlab chiqilgan referal va mukofotlash tizimiga ega aqlli bot. Taklif qilingan har bir yangi foydalanuvchi uchun mukofot beradi.",
+    emoji: "https://fonts.gstatic.com/s/e/notoemoji/latest/2b50/512.webp",
+    emojiAlt: "⭐",
+    tech: ["Node.js", "Telegram Bot API", "MongoDB"],
+  },
+];
+
+const FILTER_OPTIONS = [
+  { id: 1, name: "All", displayName: "Hammasi", icon: <MdOutlineGridView /> },
+  {
+    id: 2,
+    name: "Telegram Bot",
+    displayName: "Telegram Botlar",
+    icon: <FaTelegram />,
+  },
+  {
+    id: 3,
+    name: "Frontend Veb Ilova",
+    displayName: "Frontend Ilovalar",
+    icon: <FaGlobe />,
+  },
+];
+
 function Projects() {
-  // 🎯 1. Tanlangan kategoriyani saqlash uchun state (Boshida "All" - ya'ni hammasi)
   const [activeFilter, setActiveFilter] = useState("All");
   const [zoomedProject, setZoomedProject] = useState(null);
   const [detailedProject, setDetailedProject] = useState(null);
 
-  const projectsData = [
-    {
-      id: 1,
-      img: taxiImg,
-      title: "Telegramda taksi bot",
-      projectUrl: "https://t.me/OzimizniTaksiBot",
-      projectGithubUrl: "https://github.com/akbaral1/OzimizniTaksiBot",
-      type: "Telegram Bot",
-      desc: "Ko'pincha qishloq joylarda taksilarga qo'ngiroq qilib manzilni tushuntrish qiyin bo'lar edi. Men bunga yechim sifatida Telegramda Taxi botini yaratdim. Bo't qanday ishlaydi? Siz botga kirganingizda telefon raqamingiz va siz driver yoki yo'lovchi bo'lishingiz so'raladi va siz tanlagan tanlov malumotlar bazasiga saqlanadi. Agar siz yo'lovchi sifatida taksi buyurtma qilayotganingizda sizdan Manzilingiz (locatsiya) soraladi, siz manzilni berasiz va bot sizga 5km radiusdagi eng yaqin haydovchi (driver) ga sizni buyutmangizni yuboradi. ",
-      emoji: "https://fonts.gstatic.com/s/e/notoemoji/latest/1f695/512.webp",
-      emojiAlt: "🚖",
-      tech: ["Node.js", "Telegram Bot API", "MongoDb"],
-    },
+  // 🎯 Filterlangan loyihalarni keshga olish
+  const filteredProjects = useMemo(() => {
+    if (activeFilter === "All") return PROJECTS_DATA;
+    return PROJECTS_DATA.filter((project) => project.type === activeFilter);
+  }, [activeFilter]);
 
-    {
-      id: 2,
-      img: profilmImg,
-      title: "Profilm",
-      projectUrl: "https://profilimuz.web.app",
-      projectGithubUrl: "https://github.com/akbaralix/profilm",
-      type: "Frontend Veb Ilova",
-      desc: "Linklaringizni bir sahifada boshqarish uchun moljallangan web sayt. Instagram, Telegram, X, YouTube va shu kabi ijtiomiy tarmoqlardagi sahifangizni linkini qoshasiz. Sayitda siz nimalarni ko'rib tura olasiz? Siz Profilingizni ko'rish uchun kirganlar sonini, har bir linklaringizni bosganlar sonini ko'rib tura olasiz.",
-      emoji: "https://fonts.gstatic.com/s/e/notoemoji/latest/1f3c6/512.webp",
-      emojiAlt: "🏆",
-      tech: ["React", "Vite", "JavaScript", "HTML5", "MongoDB"],
-    },
-
-    {
-      id: 3,
-      img: slydAiImg,
-      title: "Slaydlar Yaratuvchi Telegram bot",
-      projectUrl: "https://github.com/akbaralix/SlydAi",
-      projectGithubUrl: "https://github.com/akbaral1/OzimizniTaksiBot",
-      type: "Veb Dev & Ma'rifat",
-      desc: `Sun'iy intellekt texnologiyalaridan foydalangan holda avtomatik taqdimotlar yaratishga mo‘ljallangan innovatsion Telegram bot.
-
-Foydalanuvchi mavzu yoki matn yuborishi bilan tizim kerakli ma'lumotlarni tahlil qiladi va professional ko‘rinishdagi slaydlar uchun tayyor kontent ishlab chiqaradi.
-
-Ta'lim, biznes va turli loyihalar uchun vaqtni sezilarli darajada tejashga yordam beradi.`,
-      emoji: "https://fonts.gstatic.com/s/e/notoemoji/latest/1f4da/512.webp",
-      emojiAlt: "📚",
-      tech: ["Node.js", "Telegram Bot API", "GROQ AI API", "MongoDB"],
-    },
-
-    {
-      id: 4,
-      img: akaStarImg,
-      title: "Referal orqali stars ishlovchi bot",
-      projectUrl: "https://github.com/akbaralix/SlydAi",
-      projectGithubUrl: "https://github.com/akbaral1/OzimizniTaksiBot",
-      type: "Telegram Bot",
-      desc: `Telegram Stars ekotizimi uchun ishlab chiqilgan referal va mukofotlash tizimiga ega aqlli bot.
-
-Foydalanuvchilar maxsus havolalari orqali yangi ishtirokchilarni taklif qilishlari va buning evaziga Stars ko‘rinishida bonuslar yig‘ishlari mumkin.
-
-Loyiha foydalanuvchilar faolligini oshirish, auditoriyani kengaytirish va mukofotlash jarayonlarini avtomatlashtirish uchun yaratilgan.`,
-      emoji: "https://fonts.gstatic.com/s/e/notoemoji/latest/2b50/512.webp",
-      emojiAlt: "⭐",
-      tech: ["Node.js", "Telegram Bot API", "MongoDB"],
-    },
-  ];
-
-  const projectsSort = [
-    {
-      id: 1,
-      name: "All",
-      displayName: "Hammasi",
-      icon: <MdOutlineGridView />,
-    },
-    {
-      id: 2,
-      name: "Telegram Bot",
-      displayName: "Telegram Botlar",
-      icon: <FaTelegram />,
-    },
-    {
-      id: 3,
-      name: "Frontend Veb Ilova",
-      displayName: "Frontend Ilovalar",
-      icon: <FaGlobe />,
-    },
-    {
-      id: 4,
-      name: "Veb Dev & Ma'rifat",
-      displayName: "Veb Dev & Ma'rifat",
-      icon: <FaBookOpen />,
-    },
-  ];
-
-  const filteredProjects =
-    activeFilter === "All"
-      ? projectsData
-      : projectsData.filter((project) => project.type === activeFilter);
+  // 🔗 Havolaga o'tish uchun xavfsiz funksiya
+  const handleOpenLink = useCallback((url) => {
+    if (url) window.open(url, "_blank", "noopener,noreferrer");
+  }, []);
 
   return (
     <div className="projects-container">
@@ -120,34 +105,41 @@ Loyiha foydalanuvchilar faolligini oshirish, auditoriyani kengaytirish va mukofo
         description="Tursunboyev Akbarali - Fullstack loyihalari, telegram botlar va web-ilovalari ro'yxati. G'oyadan boshlab to toza kod va tayyor deploymentgacha."
         keywords="Tursunboyev Akbarali loyihalari, telegram botlar, react loyihalar, portfolio projects"
       />
-      {/* 🚀 Sektor Sarlavhasi */}
-      <div className="projects-header">
+
+      {/* 🚀 Header Sektor */}
+      <header className="projects-header">
         <h1 className="projects-main-title">Mening Loyihalarim</h1>
         <p className="projects-subtitle">
           G'oyadan boshlab to toza kod va tayyor deploymentgacha bo'lgan raqamli
           ijod namunalarim.
         </p>
-      </div>
+      </header>
 
+      {/* 🔍 Filter Tugmalari */}
       <div className="projects-sord-grid">
-        {projectsSort.map((sort) => (
-          <div className="projects-sord" key={sort.id}>
+        {FILTER_OPTIONS.map((filter) => (
+          <div className="projects-sord" key={filter.id}>
             <button
-              onClick={() => setActiveFilter(sort.name)}
-              className={activeFilter === sort.name ? "active-sort-btn" : ""}
+              onClick={() => setActiveFilter(filter.name)}
+              className={activeFilter === filter.name ? "active-sort-btn" : ""}
+              type="button"
             >
-              {sort.icon} <span>{sort.displayName}</span>
+              {filter.icon} <span>{filter.displayName}</span>
             </button>
           </div>
         ))}
       </div>
+
+      {/* 🗂 Loyihalar Setkasi */}
       <div className="projects-grid">
         {filteredProjects.length > 0 ? (
           filteredProjects.map((project) => (
-            <div className="project-card" key={project.id}>
+            <article className="project-card" key={project.id}>
               <div
                 className="project-img"
                 onClick={() => setZoomedProject(project)}
+                role="button"
+                tabIndex={0}
               >
                 <img
                   src={project.img}
@@ -168,12 +160,13 @@ Loyiha foydalanuvchilar faolligini oshirish, auditoriyani kengaytirish va mukofo
               </div>
 
               <div className="project-card-body">
-                <div
+                <button
+                  className="project-title-btn"
                   onClick={() => setDetailedProject(project)}
-                  style={{ cursor: "pointer" }}
+                  type="button"
                 >
                   <h3 className="project-title-text">{project.title}</h3>
-                </div>
+                </button>
               </div>
 
               <div className="project-tech-tags">
@@ -186,21 +179,22 @@ Loyiha foydalanuvchilar faolligini oshirish, auditoriyani kengaytirish va mukofo
 
               <div className="projects-btn">
                 <button
-                  onClick={() => window.open(project.projectUrl, "_blank")}
+                  onClick={() => handleOpenLink(project.projectUrl)}
                   className="project-btn"
+                  type="button"
                 >
                   <FiExternalLink /> Loyihani ko'rish
                 </button>
                 <button
-                  onClick={() =>
-                    window.open(project.projectGithubUrl, "_blank")
-                  }
+                  onClick={() => handleOpenLink(project.projectGithubUrl)}
                   className="project-btn-github"
+                  type="button"
+                  aria-label="GitHub repozitoriyasini ochish"
                 >
                   <FaGithub />
                 </button>
               </div>
-            </div>
+            </article>
           ))
         ) : (
           <div className="no-projects-box">
@@ -223,17 +217,21 @@ Loyiha foydalanuvchilar faolligini oshirish, auditoriyani kengaytirish va mukofo
         )}
       </div>
 
+      {/* 🔍 Rasm Kattalashtirish Modali */}
       <ImageZoom
         src={zoomedProject?.img}
         alt={zoomedProject?.title}
-        isOpen={!!zoomedProject}
+        isOpen={Boolean(zoomedProject)}
         onClose={() => setZoomedProject(null)}
       />
 
+      {/* 📜 Batafsil Ma'lumot Modali */}
       {detailedProject && (
         <div
           className="project-detail-overlay"
           onClick={() => setDetailedProject(null)}
+          role="dialog"
+          aria-modal="true"
         >
           <CloseButton
             className="close-detail-outside-btn"
@@ -252,9 +250,9 @@ Loyiha foydalanuvchilar faolligini oshirish, auditoriyani kengaytirish va mukofo
             <span className="detail-type">{detailedProject.type}</span>
             <p className="detail-desc">{detailedProject.desc}</p>
             <div className="detail-tech">
-              {detailedProject.tech.map((t, i) => (
-                <span key={i} className="tech-tag">
-                  {t}
+              {detailedProject.tech.map((techItem, index) => (
+                <span key={index} className="tech-tag">
+                  {techItem}
                 </span>
               ))}
             </div>
