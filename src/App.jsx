@@ -2,6 +2,7 @@ import Button from "./components/Button";
 import AppRoutes from "./routes";
 import Navbar from "./pages/navbar/navbar";
 import ScrolToTop from "./components/ScrolToTop";
+import GlobalPlayer from "./components/GlobalPlayer";
 import Lenis from "lenis";
 import "./App.css";
 import { useEffect } from "react";
@@ -23,6 +24,7 @@ function Home() {
       <ScrolToTop />
       <Navbar />
       <AppRoutes />
+      <GlobalPlayer />
     </div>
   );
 }

@@ -120,10 +120,6 @@
   color: #0077b5;
 }
 
-.skills-container {
-  font-family: "Poppins", sans-serif;
-}
-
 .skills-header {
   text-align: center;
   margin-bottom: 50px;
@@ -282,6 +278,7 @@
     margin: 0 auto;
     padding: 24px 0;
     gap: 24px;
+    height: 90vh;
   }
 
   .home-text h2 {

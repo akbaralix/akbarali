@@ -1,8 +1,19 @@
 import React from "react";
 import SEO from "../../components/SEO";
+import sound from "/src/assets/ZAYLO - MONTAGEM URANIUM (SLOWED).mp3";
+import { useAudio } from "../../components/AudioContext";
 import "./about.css";
 
 function About() {
+  const { playTrack, isPlaying, currentTrack, progress, handleProgressChange } =
+    useAudio();
+
+  // 1. Aynan shu trek tanlanganmi? (Pauzada bo'lsa ham true bo'ladi)
+  const isThisTrack = currentTrack === sound;
+
+  // 2. Aynan shu trek aynan hozir ijro etilayaptimi?
+  const isThisPlaying = isThisTrack && isPlaying;
+
   const timelineData = [
     {
       year: "2024",
@@ -16,8 +27,8 @@ function About() {
     },
     {
       year: "2026",
-      title: "Suniy Intelekt Sohasiga Kirish",
-      desc: "Hozirda men suniy intelekt (AI) yaratishni o'rganish uchun o'zim mustaqil harakat qilib izlanmoqdaman. ",
+      title: "Sunoiy Intelekt Sohasiga Kirish",
+      desc: "Hozirda men suniy intelekt (AI) yaratishni o'rganish uchun o'zim mustaqil harakat qilib izlanmoqdaman.",
     },
   ];
 
@@ -50,10 +61,75 @@ function About() {
               ajoyib tarzda muvozanatda ushlab turishga harakat qilaman.
             </p>
           </div>
+
+          {/* 🎵 Musiqani yoqish qismi */}
+          <div className="sound-card">
+            <div className="sound-header">
+              <div className="sound-badge">
+                <span className="pulse-dot"></span>
+                PHONK MUSIC
+              </div>
+              <h3>Menga PHONK musiqalari yoqadi</h3>
+            </div>
+
+            <div className="sound-body">
+              <div className="track-cover-wrapper">
+                <img
+                  src="/src/assets/image.png"
+                  alt="ZAYLO - MONTAGEM URANIUM"
+                  className={`track-cover ${isThisPlaying ? "spinning" : ""}`}
+                />
+                <button
+                  className={`sound-play-btn ${isThisPlaying ? "playing" : ""}`}
+                  onClick={() => playTrack(sound, "ZAYLO - MONTAGEM URANIUM")}
+                  aria-label="Play / Pause"
+                >
+                  {isThisPlaying ? (
+                    /* Pause Icon */
+                    <svg
+                      width="18"
+                      height="18"
+                      viewBox="0 0 24 24"
+                      fill="currentColor"
+                    >
+                      <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z" />
+                    </svg>
+                  ) : (
+                    /* Play Icon */
+                    <svg
+                      width="18"
+                      height="18"
+                      viewBox="0 0 24 24"
+                      fill="currentColor"
+                    >
+                      <path d="M8 5v14l11-7z" />
+                    </svg>
+                  )}
+                </button>
+              </div>
+
+              <div className="track-details">
+                <div className="track-info-header">
+                  <span className="track-title">ZAYLO - MONTAGEM URANIUM</span>
+                </div>
+
+                <div className="track-progress-wrapper">
+                  <input
+                    type="range"
+                    className="sound-progress-input"
+                    min="0"
+                    max="100"
+                    value={isThisTrack ? progress : 0}
+                    onChange={(e) => handleProgressChange(e.target.value)}
+                    style={{ "--progress": `${isThisTrack ? progress : 0}%` }}
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
 
-      {/* ⏳ 2. Mening Yo'lim (Timeline) */}
       <div className="about-timeline-section">
         <h2 className="timeline-main-title">Mening Rivojlanish Yo'lim</h2>
         <div className="timeline-container">
