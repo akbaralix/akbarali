@@ -45,17 +45,14 @@
 
 .nav-links ul li a {
   color: #fff;
-  font-size: 18px;
+  font-size: 17px;
   text-decoration: none;
   transition: 0.3s;
 }
 
 .nav-links ul li a.active {
+  color: #ece7e7;
   font-weight: 600;
-}
-
-.nav-links ul li a:hover {
-  opacity: 0.7;
 }
 
 .menu-btn {
